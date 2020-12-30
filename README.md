@@ -1,6 +1,8 @@
 # Mathematics of Signals and Systems
 
-The files in the repository are developed for ECEn 671 taught in the Electrical and Computer Engineering Department at Brigham Young University. The purpose of the repository is to aid graduate students in learning common vector space and linear algebra techniques used in signal processing and control.  The repository consists of two directories:  The first containing lecture notes, written in beamer, and the second containing jupyter ipython notebooks written and edited by former students in my class.  These contain working code examples and homework problems.
+The files in this repository are developed for ECEn 671 taught in the Electrical and Computer Engineering Department at Brigham Young University. The purpose of the repository is to aid graduate students in learning common vector space and linear algebra techniques used in signal processing and control.  The repository consists of two directories:  The first containing lecture notes, written in beamer, and the second containing jupyter ipython notebooks written and edited by former students in my class.  These contain working code examples and homework problems.
+
+The textbook for the class is [Moon & Stirling](https://www.amazon.com/Mathematical-Methods-Algorithms-Signal-Processing/dp/0201361868/ref=sr_1_3?dchild=1&keywords=Todd+Moon&qid=1609361508&sr=8-3)
 
 ## Lecture Notes
 * ecen671_chap2.tex - metric, vector, normed, and inner product spaces, topology, orthogonality, linear operators, projections, Gram Schmidt Orthogonalization 
