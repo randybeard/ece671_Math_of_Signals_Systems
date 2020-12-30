@@ -1,0 +1,175 @@
+%%
+% Please see https://bitbucket.org/rivanvx/beamer/wiki/Home for obtaining beamer.
+%%
+\documentclass{beamer}
+\newcommand{\rwbcomment}[1]{{\color{blue}RWB:#1}}
+\newcommand{\defeq}{\stackrel{\triangle}{=}}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\frame{\titlepage}
+
+%-------------------------------
+\begin{frame}
+\frametitle{Spline problems:}	
+\begin{columns}
+\begin{column}{0.8\textwidth}
+   % lecture material goes here
+   \begin{itemize}
+   \item Smoothing:  Given a set of data $\{(t_i, y_i)\}$, fit a 5th order polynomial that minimizes the sum of the squared error.
+   \item Polynomial fit:  Given a set of data $\{(t_i, y_i)\}$ find the lowest order polynomial that fits the data exactly.
+   \item Path planning:  Given a start position and velocity, and an end position and velocity, find a trajectory that satisfies the end points.
+   \end{itemize}
+\end{column}
+\begin{column}{0.2\textwidth}  
+	% leave this blank for lecture notes
+	\rwbcomment{Add figures}
+\end{column}
+\end{columns}
+\end{frame}
+
+%-------------------------------
+\begin{frame}
+\frametitle{Path Planning}	
+\begin{columns}
+\begin{column}{0.8\textwidth}
+   % lecture material goes here
+   Given start position $p_s\in\mathbb{R}^2$, \\
+    start velocity $p_s^{'} \in\mathbb{R}^2$, 
+    end position $p_e\in\mathbb{R}^2$, and 
+    end velocity $p_e^{'}\in\mathbb{R}^2$.
+   
+   Suppose that the trajectory will be given by a 4th order spline:
+   \[
+   p(t) = \begin{pmatrix} c_{0x} \\ c_{0y} \end{pmatrix} + \begin{pmatrix} c_{1x} \\ c_{1y} \end{pmatrix} t + \begin{pmatrix} c_{2x} \\ c_{2y} \end{pmatrix} \frac{t^2}{2!} + \begin{pmatrix} c_{3x} \\ c_{3y} \end{pmatrix} \frac{t^3}{3!}.
+   \]
+   Rewrite in matrix notation as:
+   \begin{align*}
+   p(t) &= \begin{pmatrix} c_{0x} & c_{1x} & c_{2x} & c_{3x} \\ c_{0y} & c_{1y} & c_{2y} & c_{3y} \end{pmatrix} \begin{pmatrix} 1 \\ t \\  \frac{t^2}{2!} \\ \frac{t^3}{3!} \end{pmatrix} \\
+   	    &= C \phi(t),
+   \end{align*}
+   where
+   \begin{align*}
+   C &\defeq	\begin{pmatrix} c_{0x} & c_{1x} & c_{2x} & c_{3x} \\ c_{0y} & c_{1y} & c_{2y} & c_{3y} \end{pmatrix}  \\
+   \phi(t) &\defeq \begin{pmatrix} 1 \\ t \\  \frac{t^2}{2!} \\ \frac{t^3}{3!} \end{pmatrix}.
+   \end{align*}
+
+\end{column}
+\begin{column}{0.2\textwidth}  
+	% leave this blank for lecture notes
+\end{column}
+\end{columns}
+\end{frame}
+
+%-------------------------------
+\begin{frame}
+\frametitle{Path Planning (cont.)}	
+\begin{columns}
+\begin{column}{0.8\textwidth}
+	Then 
+	\begin{align*}
+	p_s &= p(0) = C \phi(0) \\
+	p_s^{'} &= p^{'}(0) = C \phi^{'}(0) \\
+	p_e &= p(1) = C \phi(1) \\
+	p_e^{'} &= p^{'}(1) = C \phi^{'}(1)
+	\end{align*}
+	where
+	\[
+	   \phi^{'}(t) = \frac{d}{dt}\phi(t) = \begin{pmatrix} 0 \\ 1 \\  t \\ \frac{t^2}{2!} \end{pmatrix}.
+	\]
+	
+\end{column}
+\begin{column}{0.2\textwidth}  
+	% leave this blank for lecture notes
+\end{column}
+\end{columns}
+\end{frame}
+
+%-------------------------------
+\begin{frame}
+\frametitle{Path Planning (cont.)}	
+\begin{columns}
+\begin{column}{0.8\textwidth}
+	Collecting all of these equations into a matrix we get
+	\begin{align*}
+	\begin{pmatrix} p_s & p_s^{'} & p_e & p_e^{'} \end{pmatrix} &= \begin{pmatrix} C \phi(0) & C \phi^{'}(0) & C \phi(1) & C \phi^{'}(1) \end{pmatrix} \\
+	&= C \begin{pmatrix} \phi(0) & \phi^{'}(0) & \phi(1) & \phi^{'}(1) \end{pmatrix}
+	\end{align*}
+	or
+	\[
+	P = C \Phi
+	\]
+	where
+	\begin{align*}
+	P &= \begin{pmatrix} p_s & p_s^{'} & p_e & p_e^{'} \end{pmatrix} \\
+	\Phi &= \begin{pmatrix} \phi(0) & \phi^{'}(0) & \phi(1) & \phi^{'}(1) \end{pmatrix}.
+	\end{align*}
+	
+	We can find $C$ by inverting $\Phi$ as
+	\[
+	C = P \Phi^{-1}
+	\]
+	
+\end{column}
+\begin{column}{0.2\textwidth}  
+	% leave this blank for lecture notes
+\end{column}
+\end{columns}
+\end{frame}
+
+
+%-------------------------------
+\begin{frame}
+\frametitle{Path Planning (cont.)}	
+\begin{columns}
+\begin{column}{0.8\textwidth}
+	But what if we use a 4th order polynomial:
+	\begin{align*}
+   	p(t) &= \begin{pmatrix} c_{0x} \\ c_{0y} \end{pmatrix} + \begin{pmatrix} c_{1x} \\ c_{1y} \end{pmatrix} t + \begin{pmatrix} c_{2x} \\ c_{2y} \end{pmatrix} \frac{t^2}{2!} + \begin{pmatrix} c_{3x} \\ c_{3y} \end{pmatrix} \frac{t^3}{3!} + \begin{pmatrix} c_{4x} \\ c_{4y} \end{pmatrix} \frac{t^4}{4!} \\
+   	   &= C \phi(t)
+   \end{align*}
+      where
+   \begin{align*}
+   C &\defeq	\begin{pmatrix} c_{0x} & c_{1x} & c_{2x} & c_{3x} & c_{4x} \\ c_{0y} & c_{1y} & c_{2y} & c_{3y} & c_{4y} \end{pmatrix}  \\
+   \phi(t) &\defeq \begin{pmatrix} 1 \\ t \\  \frac{t^2}{2!} \\ \frac{t^3}{3!} \\ \frac{t^4}{4!} \end{pmatrix}.
+   \end{align*}
+\end{column}
+\begin{column}{0.2\textwidth}  
+	% leave this blank for lecture notes
+\end{column}
+\end{columns}
+\end{frame}
+
+%-------------------------------
+\begin{frame}\frametitle{Path Planning (cont.)}	
+\begin{columns}
+\begin{column}{0.8\textwidth}
+	Proceeding as before, and collecting into a matrix we get
+	\begin{align*}
+	\begin{pmatrix} p_s & p_s^{'} & p_e & p_e^{'} \end{pmatrix} &= \begin{pmatrix} C \phi(0) & C \phi^{'}(0) & C \phi(1) & C \phi^{'}(1) \end{pmatrix} \\
+	&= C \begin{pmatrix} \phi(0) & \phi^{'}(0) & \phi(1) & \phi^{'}(1) \end{pmatrix}
+	\end{align*}
+	or
+	\[
+	P = C \Phi
+	\]
+	but in this case $P$ is $2\times 4$, $C$ is $2\times 5$ and $\Phi$ is $5\times 4$, and so we can't simply invert $\Phi$, because an inverse does not exist.
+	
+	How should we proceed?
+\end{column}
+\begin{column}{0.2\textwidth}  
+	% leave this blank for lecture notes
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+
+\end{document}
