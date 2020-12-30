@@ -17,7 +17,7 @@ The files in the repository are developed for ECEn 671 taught in the Electrical 
 
 For the viewer only option:  [http://nbviewer.jupyter.org/github/randybeard/ece671_Math_of_Signals_Systems/blob/master/jupyter/table_of_contents.ipynb](http://nbviewer.jupyter.org/github/randybeard/ece671_Math_of_Signals_Systems/blob/master/jupyter/table_of_contents.ipynb)
 
-In Linux, first set up pip:
+In a Linux/MacOS terminal, first set up pip:
 ```
 sudo apt install python3-pip
 ```
@@ -29,7 +29,7 @@ Change directory to the local git repository and run notebook:
 ```
 jupyter notebook
 ```
- 
+Use similar instructions for Windows.
 
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/randybeard/ece671-jupyter/HEAD?filepath=table_of_contents.ipby)
