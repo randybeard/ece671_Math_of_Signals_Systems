@@ -14,8 +14,83 @@ The textbook for the class is [Moon & Stirling](https://www.amazon.com/Mathemati
 * ecen671_chap14.tex - gradient descent, LMS adaptive filtering, Gauss-Newton, Levenberg-Marquardt
 * ecen671_chap18.tex - constrained optimization, Lagrange multipliers, Kuhn-Tucker conditions
 
+## Student Designed Jupiter Notebooks
+The following links have been developed by BYU graduate students enrolled in ECEn 671 **Mathematics of Signals and Systems** during Fall Semester 2018, and revised during Fall 2020.
 
-## Jupyter Notebooks
+[**Topic 1. Vector Spaces**](t1_vector_spaces.ipynb)
+
+[**Topic 2.  Vector norms: 1-norm, 2-norm, p-norm, infinity-norm**](t2_vector_norms.ipynb)
+
+[**Topic 3.  Inner product and inner product spaces**](t3_inner_products.ipynb)
+
+[**Topic 4.  Linear independence**](t4_linear_independence.ipynb)
+
+[**Topic 5.  Orthonormal bases for vector spaces**](t5_orthonormal_bases.ipynb)
+
+[**Topic 6.  Projection operators**](t6_projection_operators.ipynb)
+
+[**Topic 7.  Gram-Schmidt orthogonalization**](t7_gram_schmidt.ipynb)
+
+[**Topic 8.  Linear regression (least squares)**](t8_linear_regression.ipynb)
+
+[**Topic 9.  Dual approximation (min-norm solutions)**](t9_dual_approximation.ipynb)
+
+[**Topic 10.  Generalized Fourier series**](t10_generalized_fourier_series.ipynb)
+
+[**Topic 11. Matrix norms**](t11_matrix_norms.ipynb)
+
+[**Topic 12. Linear operators**](t12_linear_operators.ipynb)
+
+[**Topic 13. Adjoint operators**](t13_adjoint_operators.ipynb)
+
+[**Topic 14. Matrix Inverses and pseudo-inverses**](t14_matrix_inverse.ipynb)
+
+[**Topic 15. The matrix inversion lemma**](t15_matrix_inversion_lemma.ipynb)
+
+[**Topic 16. Recursive least squares**](t16_recursive_least_squares.ipynb)
+
+[**Topic 17. LU Factorization**](t17_lu_factorization.ipynb)
+
+[**Topic 17. LU Factorization-2**](t17_lu_factorization2.ipynb)
+
+[**Topic 18. Cholesky Factorization**](t18_cholesky_factorization.ipynb)
+
+[**Topic 19. QR Factorization**](t19_qr_factorization.ipynb)
+
+[**Topic 20. Eigenvalues and eigenvectors**](t20_eigenvalues.ipynb)
+
+[**Topic 21. The matrix exponential**](t21_matrix_exponential.ipynb)
+
+[**Topic 22. Differential equations and invariant subspaces**](t22_invariant_subspaces.ipynb)
+
+[**Topic 23. Quadratic Forms**](t23_quadratic_forms.ipynb)
+
+[**Topic 24. Singular Value Decomposition**](t24_singular_value_decomposition.ipynb)
+
+[**Topic 25. The four fundamental spaces of a matrix**](t25_matrix_subspaces.ipynb)
+
+[**Topic 26. Rank reducing approximations of a matrix**](t26_rank_reduction.ipynb)
+
+[**Topic 27. Gradient Descent**](t27_gradient_descent.ipynb)
+
+[**Topic 28. Lagrange Multipliers**](t28_lagrange_multipliers.ipynb)
+
+[**Topic 29. Kuhn-Tucker Conditions**](t29_kuhn_tucker.ipynb)
+
+[**Appendix. Mathematical Preliminaries**](appendix_math_preliminaries.ipynb)
+
+## Applications
+
+[**Splines Basis Construction**](SplineBasisConstruction.ipynb)
+
+[**Spline Basis Construction - Julia**](SplineBasisConstruction.jl)
+
+[**Dynamic Mode Decomposition**](DynamicModeDecomposition.ipybn)
+
+[**Multisource Statistically-Optimized Nearfield Acoustical Holography**](Application_M-SONAH.ipynb)
+  
+
+## How to Install Jupyter Notebooks
 
 For the viewer only option:  [http://nbviewer.jupyter.org/github/randybeard/ece671_Math_of_Signals_Systems/blob/master/jupyter/table_of_contents.ipynb](http://nbviewer.jupyter.org/github/randybeard/ece671_Math_of_Signals_Systems/blob/master/jupyter/table_of_contents.ipynb)
 
