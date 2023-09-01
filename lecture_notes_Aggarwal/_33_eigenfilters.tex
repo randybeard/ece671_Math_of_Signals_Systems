@@ -1,0 +1,105 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Eigenfilters}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenfilters for Random Signals}
+	{\color{blue}Problem:}
+	Given
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{figures/chap6_eigenfilter}
+	\end{center}
+	where $\nu$ is white noise with variance $\sigma^2$, and $f$ is a stationary, zero-mean random process.
+	
+	\vfill
+	
+	Find $\mathbf{h}$ to maximize the signal-to-noise ratio.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenfilters for Random Signals}
+	Let
+	\[
+		\fbf(t) 
+			= \begin{pmatrix}
+	    		f(t)\\
+	    		f(t-1)\\
+	    		\vdots\\
+	    		f(t-(m-1))
+	  		  \end{pmatrix}
+	\]
+	then
+	\[ 
+		y(t) = \hbf^H \fbf(t).
+	\]
+	The output power due to the signal $\fbf$ is 
+	\begin{align*}
+		P_0 
+		&= E|y(t)|^2 = E|\hbf^H\fbf(t)|^2 = E\{\hbf^H\fbf(t)\hbf^H\fbf(t)\}\\
+		&= E\{\hbf^H\fbf(t)\fbf^H(t)\hbf\}= \hbf^HE\{\fbf(t)\fbf^H(t)\}\hbf\\
+		&= \hbf^HR\hbf
+	\end{align*}
+	
+	where $R = E\{\fbf(t) \fbf^H(t)\} $
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenfilters for Random Signals}
+	Let 
+	\[ 
+		\nubf(t) 
+			= \begin{pmatrix}
+	    		v(t)\\
+	    		v(t-1)\\
+	    		\vdots
+	    		\\
+	    		v(t-m+1)
+	  		  \end{pmatrix}
+	\]
+	Then the output due to the noise is
+	\[ 
+		\hbf\nubf(t) 
+	\]
+	and the average noise power is
+	\[ 
+		N_0 = E\{\hbf^H\nubf(t)\nubf^H(t)\hbf\} 
+		    = \sigma^2\hbf^H\hbf 
+	\]
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenfilters for Random Signals}
+	The signal-to-noise ratio is
+	\begin{align*}
+		SNR &= \frac{P_0}{N_0} \\
+		    &= \frac{1}{\sigma^2} \cdot
+		    	\underbrace{
+		    		\frac{\hbf^HR\hbf}{\sigma^2\hbf^H\hbf}
+		    	}_{\text{Rayleigh quotient}} 
+	\end{align*}
+	Therefore
+	\[ 
+		SNR_{max} = \frac{\lambda_1}{\sigma^2} 
+	\]
+	where $\lambda_1$ is the largest eigenvalue of $R$ and $\hbf = q_1$ the largest eigenvector of $R$.
+\end{frame}
+
+
+\end{document}

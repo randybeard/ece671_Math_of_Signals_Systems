@@ -1,0 +1,147 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Inner Product Spaces}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Inner Product Spaces}
+\begin{definition}[Inner Product] Let $S$ be a vector space over $\mathbb{R}$.  An inner product $<\cdot,\cdot>:S \times S \to \mathbb{R}$ has the following properties:\\
+\begin{flalign*}
+(IP1) \qquad &\iprod{x,y} = \overline{\iprod{ y,x }}\\
+(IP2) \qquad &\iprod{\alpha x,y} = \alpha \iprod{ x,y }\\
+(IP3) \qquad &\iprod{ x+y,z } = \iprod{ x,z } + \iprod{ y, z }\\
+(IP4) \qquad &\iprod{ x,x } > 0 \quad \text{~if~} x \neq 0, \iprod{ x,x}=0 \Leftrightarrow x=0
+\end{flalign*}
+\end{definition}
+
+\begin{definition}[Inner Product Space] A vector space with an inner product defined is called an inner-product space.	
+\end{definition}
+
+\begin{definition}[Hilbert Space] A complete inner-product space is called a \underline{Hilbert space}.	
+\end{definition}
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Inner Product Spaces: Examples}
+\begin{itemize}
+	\item $\mathbb{R}^n$: $\iprod{ x,y } = \sum_{i=1}^{n} x_i y_i = x^Ty$ is called the Euclidean inner product.
+	\item $\mathbb{C}^n$: $\iprod{ x,y } = \sum_{i=1}^{n} x_i \overline{y_i} = y^Hx$
+\end{itemize}
+\begin{itemize}
+	\item $\mathbb{R}^n$ with the Euclidean inner product is a Hilbert space	.
+	\item $\mathbb{C}^n$ with the Euclidean inner product is a Hilbert space.
+	\item All finite-dimensional inner-product spaces are Hilbert spaces.
+\end{itemize}
+\end{frame}
+	
+%----------------------------------
+\begin{frame}\frametitle{Inner Product Spaces: Examples}
+\begin{itemize}
+	\item Real sequences $\boldsymbol{\ell}_2 $: $\iprod{ x,y }_{\ell_2} = \sum_{i=1}^{\infty} x_i y_i$
+	\item Complex sequences $\boldsymbol{\ell}_2$:  $\iprod{ x,y }_{\ell_2} = \sum_{i=1}^{\infty} x_i \overline{y_i}$
+	\item Both of these examples are Hilbert spaces.
+\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Inner Product Spaces: Examples}
+\begin{itemize}
+	\item Complex function space $L_2^n(\Omega)$ with inner product:
+		\[
+		\iprod{ x,y } = \displaystyle \int_{\infty} y^H(t)x(t) \,dt
+		\]
+		is a Hilbert space, but 
+	\item Continuous function $C[a,b]$ with the same inner product is NOT a Hilbert space.
+\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Norms vs Inner Products}
+Every inner product defines a norm (but not vice-versa)
+\[ 
+\norm{ x}  = \iprod{ x,x }^{\frac{1}{2}} 
+\] 
+where $\norm{\cdot}$ is called the norm induced by the inner product $\iprod{\cdot, \cdot}$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of inducted norms}
+
+\begin{flalign*}
+\norm{ \cdot}_2\text{:  }\iprod{ x,x }^{1/2} &= \left( \displaystyle \sum_{i=1}^{n}x_i^2 \right)^{1/2} = \norm{ x}_2\\
+\norm{ \cdot}_{\ell_2}\text{:  }\iprod{ x,x }^{1/2} &= \left( \displaystyle \sum_{i=1}^{\infty} x_i^2 \right)^{1/2} = \norm{ x}_{\ell_2}\\
+\norm{ \cdot}_{L_2}\text{:  }\iprod{ x,x }^{1/2} &= \left( \displaystyle \int_{\Omega} x^T(t)x(t) dt \right)^{1/2}
+= \left( \int_{\Omega} \norm{ x(t)}_2^2 dt \right)^{1/2}
+= \norm{ x}_{L_2}\\
+\end{flalign*}
+
+Note that induced norms are all $2-$norms.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cauchy-Schwartz Inequality}
+\begin{theorem}[Cauchy-Schwartz]
+Let $S$ be any inner product space (doesn't need to be Hilbert) and let $\norm{ \cdot}  = \iprod{ \cdot, \cdot }^{1/2}$\\
+then $\forall x,y \in S$
+\[ |\iprod{ x,y } | \leq \norm{ x}  \norm{ y}  \]
+with equality iff $y=\alpha x$ where $\alpha\in\mathbb{F}$ is any scalar in the field $\mathbb{F}$.
+\end{theorem}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cauchy-Schwartz Inequality: Proof}
+The inequality clearly holds if either $x=0$ or $y=0$.  Therefore assume that $x \neq 0$ and $y \neq 0$. Then
+\begin{align*}
+	\norm{ x-\alpha y} ^2 &= \iprod{ x-\alpha y, x - \alpha y } \\
+		&=\iprod{ x ,x } - \alpha \iprod{ y,x } - \iprod{ x, \alpha y } + \iprod{ \alpha y, \alpha y } \\
+		&=\iprod{ x ,x } - \alpha \iprod{ y,x } - \overline{\overline{\iprod{ x, \alpha y }}} + \alpha \overline{\overline{\iprod{ y, \alpha y }}} \\
+		&=\iprod{ x ,x } - \alpha \iprod{ y,x } - \overline{\iprod{ \alpha y, x }} + \alpha \overline{\iprod{ \alpha y, y }} \\
+		&=\iprod{ x ,x } - \alpha \iprod{ y,x } - \overline{\alpha} \overline{\iprod{ y, x }} + \alpha\overline{\alpha}\overline{\iprod{ y, \alpha y }}\\
+		&=\iprod{ x ,x } - \alpha \iprod{ y,x } - \overline{\alpha} \iprod{ x, y } + \abs{\alpha}^2\iprod{ y, y } \\
+		&=\norm{x}^2 - \alpha \iprod{ y,x } - \overline{\alpha} \iprod{ x, y } + \abs{\alpha}^2\norm{y}^2 \\
+\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cauchy-Schwartz Inequality: Proof}
+Recall the technique of completing the square:
+\begin{flalign*}
+ax^2+bx+c &= a(x^2 + \frac{b}{a}x) + c\\
+&= a(x+\frac{b}{2a})^2 - \frac{b}{4a}^2 + c.
+\end{flalign*}
+Complete the square in $\alpha$:
+\begin{align*}
+\norm{ x-\alpha y}^2 &= \norm{ y} ^2 \left(\alpha\overline{\alpha} - \alpha \frac{\overline{ \iprod{ x,y } }}{\norm{ y} ^2} - \bar\alpha \frac{\iprod{ x,y }}{\norm{ y} ^2} \right) + \norm{ x} ^2 \\
+	&= \norm{ y} ^2 \left( \alpha - \frac{\iprod{ x,y }}{\norm{ y} ^2}\right)\left(\bar\alpha - \frac{\overline{\iprod{ x,y }}}{\norm{ y} ^2}\right) - \frac{|\iprod{ x,y } |^2}{\norm{ y} ^2} + \norm{ x} ^2
+\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cauchy-Schwartz Inequality: Proof}
+Let $\alpha^*= \frac{\iprod{ x,y }}{\norm{ y} ^2}$ to get
+\begin{align*}
+	& 0 \leq \norm{ x - \alpha^*y} ^2 = \norm{ x} ^2 - \frac{|\iprod{ x,y }|^2}{\norm{ y} ^2} \\
+	\Rightarrow &\qquad |\iprod{ x,y } |^2 \leq \norm{ x} ^2\norm{ y} ^2 \\
+	\Rightarrow &\qquad |\iprod{ x,y } | \leq \norm{ x}  \norm{ y}
+\end{align*}
+\end{frame}
+
+
+\end{document}

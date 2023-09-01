@@ -1,0 +1,128 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rank Reducing Approximations}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Rank Reducing Approximations}
+	{\color{blue}Problem:}  Given $A$ with $rank(A) = r$, find a matrix $B$ that is ``close'' to $A$ in some sense, but with lower rank.	
+	
+	\begin{theorem}[Moon Theorem 7.2]	
+		Given $A \in \mathbb{C}^{m\times n}$ with $rank(A)=r$, then
+		\[
+			A = U_1\Sigma_1V_1^H = \sum_{j=1}^r \sigma_j\ubf_j\vbf_j^H
+		\]
+		
+		Let $k < r$ and let 
+		\[ 
+			A_k \defeq \sum_{j=1}^k\sigma_j\ubf_j\vbf_j^H \qquad (rank(A_k) = k) 
+		\]
+		
+		Then $\norm{A-A_k}_2 = \sigma_{k+1}$ and $A_k$ is the nearest rank $k$ matrix to $A$, in the matrix 2-norm, i.e.
+		\[ 
+			A_k = \arg\min_{rank(B)=k} \norm{A-B }_2.
+		\]
+	\end{theorem}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Rank Reducing Approximations, Proof}
+	{\color{blue}Remark:} In the previous section, we saw that we could reduce the rank by zeroing small singular values.  This theorem shows that this is the best way to reduce the rank in the matrix 2-norm sense.	
+
+	\begin{proofstart}
+		\begin{align*}
+			\norm{A-A_k }_2 
+				&= \norm{\sum_{j=k+1}^r\sigma_j\ubf_j\vbf_j^H }_2 \\
+				&= \max_{\norm{x }=1}\norm{\sum_{j=k+1}^r\sigma_j\ubf_j\vbf_j^Hx }_2
+		\end{align*}
+		Note that we maximize by letting $x^\ast = \vbf_{k+1}$ since any other $x$ will be a linear combination of smaller singular values.	
+	\end{proofstart}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Rank Reducing Approximations, Proof}
+	Therefore
+	\[ 
+		\norm{A-A_k} = \norm{\sigma_{k+1 }\ubf_{k+1}} = \sigma_{k+1} 
+	\]
+	since $\norm{\ubf_{k+1}} = 1$.
+	
+	\vfill
+	
+	Because $\norm{A-A_k }_2 = \sigma_{k+1}$ we know that
+	\[ 
+		\min_{rank(B)=k}\norm{A-B } \leq \sigma_{k+1}.
+	\]
+	To complete the proof we need to show that
+	\[ 
+		\sigma_{k+1} \leq \min_{rank(B)=k}\norm{A-B }.
+	\]	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Rank Reducing Approximations, Proof}
+	Let $B$ be any rank-$k$ matrix.  Then 
+	\[
+		rank(B)=k \quad \implies \quad dim(\mathcal{N}(B))=n-k.
+	\]
+	Therefore, there exists $ \{x_{k+1},\ldots,x_n\} $ such that
+	\[ 
+		\mathcal{N}(B) = span\{x_{k+1}, \ldots, x_n \}
+	\]
+	The columns of $V_1$ are $\{\vbf_1\ldots \vbf_k,\vbf_{k+1}\ldots \vbf_r\}$ where $\vbf_i \in \mathbb{C}^n$.
+	Let 
+	\[
+		z \in 
+			\underbrace{
+				span\underbrace{
+						\{x_{k+1},\ldots,x_n\}
+					}_{dim=n-k} 
+					~~\cap~~ 
+				span\underbrace{
+						\{\vbf_1,\ldots,\vbf_{k+1}\}
+					}_{dim=k+1}
+			}_{\text{dimension at least one since there are $n+1$ vectors}
+			} 
+	\]
+	Therefore $z \neq 0$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Rank Reducing Approximations, Proof}
+	Let 
+	\begin{align*}
+		\norm{A-B }_2 
+			&= \max_{\norm{x }\neq 0}\frac{\norm{(A-B)x }}{\norm{x }} \leq \frac{\norm{(A-B)z }}{\norm{z }} \\
+			&= \frac{\norm{Ax }}{\norm{z }} \text{ since } z \in \mathcal{N}(B) \\
+			&= \frac{\norm{\sum_{j=1}^r\sigma_j\ubf_j\vbf_j^Hz }}{\norm{z }} = \frac{\norm{\sum_{j=1}^{k+1}\sigma_j\ubf_j\vbf_j^Hz }}{\norm{z }}
+	\end{align*}	
+	Since $z \perp span\{\vbf_{k+2},\ldots,\vbf_r\}$ the smallest we can make the numerator is $\sigma_{k+1}$ by a choice of $z = \vbf_{k+1}$.  So
+	\[ 
+		\norm{A-B }_2 
+			\geq \frac{\norm{\sigma_{k+1 }\vbf_{k+1}}}{\norm{\vbf_{k+1} }} 
+			= \sigma_{k+1} 
+	\]
+	for any $B$ such that $rank(B) = k$ so that
+	\[ 
+		\min_{rank(B) = k}\norm{A-B }_2 \geq \sigma_{k+1}.
+	\]
+\end{frame}
+
+
+
+\end{document}

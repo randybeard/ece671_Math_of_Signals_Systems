@@ -1,0 +1,191 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cayley-Hamilton Theorem}
+\frame{\sectionpage}
+
+
+%----------------------------------
+\begin{frame}\frametitle{Functions of Matrices}
+	\begin{lemma}
+	A square matrix can always be put in Jordan form.	
+	\end{lemma}
+	This implies that we can always write
+	\[ 
+		A = SJS^{-1} 
+	\]
+	
+	This implies that 
+	\begin{align*}
+		A^k &= \underbrace{AA\cdots A}_{k\text{ times}} \\
+		    &= SJS^{-1}SJS^{-1}\cdots SJS^{-1} \\
+		    &= SJ^kS^{-1} 
+	\end{align*}
+	This is particularly simple if $J = \Lambda$ since 
+	\[ 
+		A^k = S\Lambda^kS^{-1} 
+		\text{ where } 
+		\Lambda^k 
+			= \begin{pmatrix}
+	    		\lambda_1^k & & 0\\
+	    		& \ddots \\
+	    		0 & & \lambda_n^k
+	  		  \end{pmatrix} 
+	\]	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Functions of Matrices, cont.}
+	For square matrices we can define analytic functions of matrices.
+	Analytic functions are functions that can be expanded as a Taylor
+	seires, e.g.
+	\begin{align*}
+		e^x &= 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots \\
+		\cos(x) &= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} + \frac{x^6}{6!} + \cdots \\
+		\sin(x) &= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots 
+	\end{align*}
+	The corresponding Matrix function is defined in terms of its Taylor
+	series, e.g.,
+	\begin{align*}
+		e^A &= I + A + \frac{A^2}{2!} + \frac{A^3}{3!} + \cdots\\
+		\cos(A) &= I - \frac{A^2}{2!} + \frac{A^4}{4!} - \frac{A^6}{6!} + \cdots\\
+		\sin(A) &= A - \frac{A^3}{3!} + \frac{A^5}{5!} - \frac{A^7}{7!} + \cdots
+	\end{align*}
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cayley-Hamilton Theorem}
+	Computing infinite series of matrices is a pain.  Fortunately we have
+	the following theorem:
+	
+	\begin{theorem}[Cayley-Hamilton Theorem]
+		Every matrix satisfies its own characteristic polynomial, i.e.
+		\[ 
+			\chi_A(A) = 0.
+		\]	
+	\end{theorem}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cayley-Hamilton Theorem, proof}
+	The proof holds for all $A$ but we will only prove the case when
+	$q_i=m_i$ for each $\lambda_i$.  In this case $A=S\Lambda S^{-1}$.
+	Note that for each eigenvalue $\chi_A(\lambda_i) = 0 $ since
+	$\chi_A(\lambda_i) = \det(\lambda_i I - A)$
+	
+	Let \[
+			\chi_A(\lambda) = \lambda^n + a_{n-1}\lambda^{n-1} + \cdots + a_1\lambda + a_0 
+		\]
+	then
+	\begin{align*}
+		\chi_A(A) &= A^n + a_{n-1}A^{n-1} + \cdots + a_1A + a_0I \\
+				  &= S\Lambda^nS^{-1} + a_{n-1}S\Lambda^{n-1}S^{-1} + \cdots + a_1S\Lambda S^{-1} + a_0SS^{-1}\\
+				  &= S(\Lambda^n + a_{n-1}\Lambda^{n-1} + \cdots + a_1\Lambda + a_0I)S^{-1}
+	\end{align*}
+	Note that the matrix 
+	\[
+		\Lambda^n + a_{n-1}\Lambda^{n-1} + \cdots + a_1\Lambda + a_0I
+	\]
+	is diagonal with each element on the diagonal equal to $\lambda_i^n +
+	    a_{n-1}\lambda_i^{n-1} + \cdots + a_1\lambda_i + a_0=0$.
+	  
+	Therefore 
+	\[
+		\Lambda^n + a_{n-1}\Lambda^{n-1} + \cdots + a_1\Lambda + a_0I = 0.
+	\]	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cayley-Hamilton Theorem, implications}
+	{\footnotesize
+		Recall polynomial division:
+		\begin{align*}
+			& \frac{f(x)}{q(x)} = a(x) + \frac{r(x)}{q(x)} \\
+			\implies & 
+				\underbrace{f(x)}_{\text{degree $m$}} 
+					=
+					\underbrace{a(x)}_{\text{degree $(m-n)$}}
+					\overbrace{q(x)}^{\text{degree $n$}} 
+					+ \underbrace{r(x)}_{\text{degree $< n$}}
+		\end{align*}
+		Application to infinite series like $e^x$ gives
+		\[ 
+			\underbrace{e^x}_{\text{degree $\infty$}} 
+				= \underbrace{a(x)}_{\text{degree $\infty$}}
+				  \overbrace{\chi_A(x)}^{\text{degree $n$}} 
+				  + \underbrace{r(x)}_{\text{degree $<n$}}
+		\]
+	}
+	Since $\chi_A(A) = 0$,
+	\begin{align*}
+	 	e^A &= \underbrace{r(A)}_{\text{degree $< n$}}
+			&= \cdots b_{n-1}A^{n-1} + \cdots + b_1A + b_0I
+	\end{align*}
+	Since $e^{\lambda_i} = r(\lambda_i)$ the coefficients can be found
+	from
+	\[ 
+		e^{\lambda_i} = \cdots b_{n-1}\lambda^{n-1} + \cdots + b_1\lambda + b_0.
+	\]	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Cayley-Hamilton Theorem, example}
+	Find $e^A$ where 
+	$A = \begin{pmatrix}
+	    	0 & 1\\
+	    	-2 & -2
+	  	  \end{pmatrix}$.  
+	{\footnotesize
+	\[ \det(\lambda I - A ) = \lambda^2 + 2\lambda + 2 \Rightarrow
+	\lambda_{1,2} = -1 \pm j \]
+	\[ \Rightarrow e^A = b_1A + b_0I = \begin{pmatrix}
+	    0 & b_1\\
+	    -2b_1 & -2b_1
+	  \end{pmatrix}+\begin{pmatrix}
+	    b_0 & 0\\
+	    0 & b_0
+	  \end{pmatrix} = \begin{pmatrix}
+	    b_0 & b_1\\
+	    -2b_1 & -2b_1-b_0
+	  \end{pmatrix}\]
+	}
+	where $b_0$ and $b_1$ satisfy
+	\[e^{-1+j} = b_1(-1+j) + b_0\]
+	\[e^{-1-j} = b_1(-1-j)+b_0 \]
+	\[ \Rightarrow \begin{pmatrix}
+	    b_0\\b_1
+	  \end{pmatrix}
+	= \begin{pmatrix}
+	    1 & -1+j\\
+	    1 & -1-j
+	  \end{pmatrix}^{-1}\begin{pmatrix}
+	    e^{-1+j}\\e^{-1-j}
+	  \end{pmatrix}=\begin{pmatrix}
+	    0.5083\\
+	    0.3096
+	  \end{pmatrix}
+	\]
+	\[\Rightarrow e^{A} = \begin{pmatrix}
+	    0.5083 & 0.3096\\
+	    -0.6191 & -0.1108
+	  \end{pmatrix}
+	 \]
+\end{frame}
+
+
+
+\end{document}

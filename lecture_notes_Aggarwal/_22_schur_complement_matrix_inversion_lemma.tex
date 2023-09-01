@@ -1,0 +1,102 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Schur Complement and the Matrix Inversion Lemma}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Schur Complement}
+	\begin{definition}
+		Consider the partitioned matrix
+		\[
+		A = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{bmatrix}.
+		\]	
+		\begin{enumerate}
+			\item When $A_{11}$ is non-singular, 
+				\[ S_{ch}(A_{11}) \defeq A_{22} - A_{21}A_{11}^{-1}A_{12} \]
+				is called the \underline{Schur Complement of $A_{11}$ in $A$}.
+			\item When $A_{22}$ is non-singular, 
+				\[ S_{ch}(A_{22}) \defeq A_{11} - A_{12}A_{22}^{-1}A_{21} \]
+				is called the \underline{Schur Complement of $A_{22}$ in $A$}.
+		\end{enumerate}
+	\end{definition}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Schur Complement, cont.}
+	\begin{lemma}
+	When $A_{11}$ is nonsingular, $A$ is nonsingular if and only if $S_ch(A_{11})$ is nonsingular, in which case
+	\[
+	A^{-1} = \begin{bmatrix}
+				A_{11}^{-1} + A_{11}^{-1}A_{12}S_{ch}^{-1}(A_{11})A_{21}A_{11}^{-1} &
+				-A_{11}^{-1}A_{12}S_{ch}^{-1}(A_{11}) \\
+				-S_{ch}^{-1}(A_{11})A_{21}A_{11}^{-1} &
+				S_{ch}^{-1}(A_{11})
+ 			 \end{bmatrix}
+	\]	
+	\end{lemma}
+	\begin{lemma}
+	When $A_{22}$ is nonsingular, $A$ is nonsingular if and only if $S_ch(A_{22})$ is nonsingular, in which case
+	\[
+	A^{-1} = \begin{bmatrix}
+				S_{ch}^{-1}(A_{22}) &
+				-S_{ch}^{-1}(A_{22})A_{12}A_{22}^{-1} \\
+				-A_{22}^{-1}A_{12}S_{ch}^{-1}(A_{22}) &
+				A_{22}^{-1} + A_{22}^{-1}A_{21}S_{ch}^{-1}(A_{22})A_{12}A_{22}^{-1} 
+ 			 \end{bmatrix}
+	\]	
+	\end{lemma}
+	\begin{proof}
+	By direct manipulation.	
+	\end{proof}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Matrix Inversion Lemma}
+	\begin{lemma}[Matrix Inversion Lemma]
+		If $A\in\mathbb{R}^{n\times n}$ and $R\in\mathbb{R}^{m\times m}$ are invertible, and $X\in\mathbb{R}^{n\times m}$ and $Y\in\mathbb{R}^{m\times n}$ then
+		\[ (A + X R Y)^{-1} = A^{-1} - A^{-1}X(R^{-1}+YA^{-1}X)^{-1}YA^{-1} \]
+	\end{lemma}
+	\begin{proof}  Equate the $(2,2)$ elements of $A^{-1}$ in the previous slide, and re-label matrices.	
+	\end{proof}
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Matrix Inversion Lemma, cont.}
+	\begin{itemize}
+	\item 	A special case of this matrix inversion lemma is the formula
+		\[ 
+		(A + xy^H)^{-1} = A^{-1} - \frac{A^{-1}xy^H A^{-1}}{1 + y^H A^{-1}x} 
+		\]
+		where $x$ and $y$ are vectors.
+	\item Sylvester's inequality gives
+		\[
+		rank(x)+rank(y) - 1 \leq rank(xy^H) \leq min(rank(x),rank(y)).
+		\]
+		But 
+		\begin{align*}
+			rank(x)+rank(y) - 1	&= 1 \\
+			min(rank(x),rank(y)) &= 1
+		\end{align*}
+	\item Therefore $rank(xy^H) = 1$
+	\end{itemize}
+\end{frame}
+
+
+
+
+\end{document}

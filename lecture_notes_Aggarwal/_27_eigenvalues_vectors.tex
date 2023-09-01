@@ -1,0 +1,504 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Eigenvalues and Eigenvectors}
+\frame{\sectionpage}
+
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenpair}
+	Let $A\in\mathbb{C}^{n\times n}$.
+	\begin{definition}
+		\begin{itemize}
+		  \item $(\lambda,x)$ is a \underline{right eigen-pair} if $Ax=\lambda x$ and $x \neq 0$.
+		  \item $(\lambda,x)$ is a \underline{left eigen-pair} if $x^HA=\lambda x^H$ and $x\neq 0$.
+		\end{itemize}		
+	\end{definition}
+	Note that $Ax = \lambda x$ can be written as
+	\[ 
+		(\lambda I - A)x = 0. 
+	\]
+	Therefore for $x$ to be an eigenvector (associated with $\lambda $) then $x\in\mathcal{N}(\lambda I-A)$, and
+	\[
+		x\neq 0 \Rightarrow \mathcal{N}(\lambda I-A) \neq \{0\} \Rightarrow det(\lambda I-A)=0 
+	\]
+	This formula can be used to find the eigenvalues and eigenvectors of a matrix.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenpair: Example}
+	Let $A = \begin{pmatrix}
+	    0 & 1\\
+	    -2 & -2
+	  \end{pmatrix}$.  
+	Find the eigenvalues and eigenvectors.
+	
+	\par\underline{Eigenvalues:}
+		\[ 
+		det(\lambda I - A) 
+			= det\begin{pmatrix}
+    				\lambda  & -1\\
+   					 2 & \lambda +2
+  				  \end{pmatrix} 
+  			= \lambda^2 + 2\lambda  + 2 
+  			= 0
+  	\]
+  	implies that
+	\[ 
+		\lambda  = -1 \pm \sqrt{1-2} 
+		         = -1 \pm j 
+	\]
+	so that
+	\[ 
+		\lambda_1 = -1 + j 
+		\qquad \qquad 
+		\lambda_2 = -1 - j.
+	\]
+Which one is larger?  Note, there is no possible ordering among complex numbers.
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenpair: Example}
+	\par\underline{Eigenvectors:}
+	The eigenvectors can be found from the formula
+	\(
+		(\lambda I-A)x = 0.
+	\)
+	\[ 
+		\lambda_1: 
+			\begin{pmatrix}
+	    		-1+j & -1\\
+	    		2 & 1+j
+	  		\end{pmatrix}
+			\begin{pmatrix}
+	    		x_{11}\\x_{12}
+	  		\end{pmatrix}
+			=
+			\begin{pmatrix}
+	    		0\\0
+	  		\end{pmatrix}.
+	\]
+	Note that the rows are linearly dependent since
+	\begin{align*} 
+		& (-1 + j) \begin{pmatrix}
+	    			-1 + j & -1
+	  			  \end{pmatrix} 
+	  	+ \begin{pmatrix}
+	    	2 & 1+j
+	  	  \end{pmatrix} \\
+	  	&= 
+			\begin{pmatrix}
+	    		-2 & -(1+j)
+	  		\end{pmatrix}
+	  		+	\begin{pmatrix}
+	    			2 & 1 + j
+	  			\end{pmatrix} \\
+	  	&= 0.
+	\end{align*}
+	Therefore, solving $(-1 + j)x_{11} - x_{12} = 0$ gives
+	\[ 
+		x_{12} = (-1+j)x_{11} 
+	\]
+	Let $x_{11} = 1$ then $x_{12} = -1 + j$.
+	
+	So 
+	\[
+		x_1 
+			= \begin{pmatrix}
+	    		1\\-1+j
+	  		   \end{pmatrix}
+	\]
+	is an eigenvector.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenpair: Example}
+	\[ 
+		\lambda_2: 
+			\begin{pmatrix}
+	    		-1-j & -1\\
+	    		2 & 1-j
+	  		\end{pmatrix}
+			\begin{pmatrix}
+	    		x_{21}\\
+	    		x_{22}
+	  		\end{pmatrix}
+			= 
+			\begin{pmatrix}
+	    		0\\0
+	  		\end{pmatrix}
+	  \]
+	Again the rows are linearly dependent so solve to get
+	\(
+		(-1-j)x_{21} = x_{22}
+	\)
+	Let $x_{21} = 1$ then $x_{22} = -1 - j$.
+	
+	So 
+	\[
+		x_2 = \begin{pmatrix}
+	    		1 \\ -1 -j
+	  		  \end{pmatrix}
+	\]
+	is an eigenvector.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Characteristic Polynomial}
+	\begin{definition}
+		The polynomial
+		\[
+			\chi_A(\lambda ) = det(\lambda I - A)
+		\]
+		is called the \underline{characteristic polynomial} of $A$.  The eigenvalues of $A$ are the roots of $\chi_A(\lambda )=0$.  The set of roots of $\chi_A(\lambda )=0$ is called the spectrum of $A$, denoted $\lambda (A)$.
+	\end{definition}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Relationship between transfer function and state space models}
+
+	Given a state space system:
+	\begin{align*}
+		\dot{x} &= Ax + Bu \\ 
+		y &= Cx
+	\end{align*}
+	where $x\in \mathbb{R}^n$, $u \in \mathbb{R}^m$, $y \in \mathbb{R}^p$, what is the transfer function?
+	
+	Take the Laplace transform to get
+	\begin{align*}
+		sX(s) &= AX(s) + BU(s)\\
+		Y(s) &= CX(s)
+	\end{align*}
+	
+	From the first equation we get 
+	\[ 
+		X(s) = (sI - A)^{-1}BU(s) 
+	\]
+	
+	From the second equation we get
+	\[ 
+		Y(s) = \underbrace{C(sI-A)^{-1}B}_{(p\times m) \text{ transfer matrix}}U(s) 
+	\]
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Relationship between transfer function and state space models}
+	What are the poles of the system?
+	\begin{align*}
+		Y(s) &= C(sI-A)^{-1}BU(s) \\
+		     &= \frac{C \adj(sI-A)B}{\det(sI-A)}U(s) 
+	\end{align*}
+	
+	Therefore, the poles are when 
+	\[
+		det(sI-A) = 0,
+	\]
+	i.e. when $s$ is an eigenvalue of $A$.
+
+	\vfill
+	
+	{\color{blue} 
+		The poles of an LTI system and the eigenvalues of $A$ are equivalent!
+	}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Generalized Eigenvalues}
+	Eigenvalues and eigenvectors can be defined for more general operators than just matrices.
+	
+	\begin{example}
+		Let $h(t)$ be the impulse response of an LTI system with Fourier transform $H(j\omega)$.
+		\begin{center}
+			\includegraphics[width=0.5\textwidth]{figures/chap6_linear_system}	
+		\end{center}
+		Recall that if $u(t)=e^{j\omega_0 t}$ then 
+		\begin{align*}
+		 y(t) &= |H(j\omega_0)|e^{j\left(\omega_0 t + \angle H(j\omega_0)\right)}\\
+		&= |H(j\omega_0)|e^{j\angle H(j\omega_0)}e^{j\omega_0 t}
+		\end{align*}
+		i.e. if a sinusoid goes in then the output will be a sinusoid of the
+		same frequency but different magnitude and phase.		
+	\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Generalized Eigenvalues}
+	\begin{lemma}
+		Let $\Acal[u] = \displaystyle \int_0^\top  h(t-\tau)u(\tau)d\tau $ then
+		\[ 
+			(\lambda,x) = \left( H(j\omega)e^{j\angle H(j\omega)},e^{j\omega t} \right) 
+		\]
+		is an eigenpair of $\Acal$.
+	\end{lemma}
+	\begin{proof}
+		\[ 
+			\Acal[e^{j\omega t}] = \left( |H(j\omega)|e^{j\angle
+		    H(j\omega)}\right) e^{j\omega t}.
+		\]
+		
+		Note that for $\Acal$ there are an uncountable infinite number of eigenpairs.		
+	\end{proof}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Geometric and Algebraic Multiplicity}
+	\begin{definition}
+		Factor the characteristic polynomial as follows:
+		\[ 
+			\chi_A(\lambda) = (\lambda-\lambda_1)^{m_1}(\lambda-\lambda_2)^{m_2}\cdots(\lambda-\lambda_p)^{m_p}
+		\]
+		$m_i$ is the \underline{algebraic multiplicity} of eigenvalue $\lambda_i$.	
+	\end{definition}
+	
+	\begin{definition}
+		The \underline{geometric multiplicity} of eigenvalue $\lambda_i$ is defined as 
+		\[
+			q_i = dim(\mathcal{N}(\lambda_iI-A)).
+		\]
+	\end{definition}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Geometric and Algebraic Multiplicity: Example}
+	Let 
+	$
+		A = \begin{pmatrix}
+	    		1 & 0 \\
+	    		0 & 1
+	  		\end{pmatrix}
+	$ 
+	then
+	\[ 
+		\chi_A(\lambda) 
+			= \det(\lambda I - A) 
+			= \det\begin{pmatrix}
+	    			\lambda-1 & 0\\
+					0 & \lambda-1
+	  			   \end{pmatrix} 
+	  		= (\lambda-1)^2. 
+	\]
+	Therefore, the algebraic multiplicity of $\lambda_1 = 1$ is $m_1 = 2$.
+	
+	What is the geometric multiplicity?
+	\[ 
+		q_1 = dim(\mathcal{N}(\lambda_1I-A)) 
+			= dim\left(
+				\mathcal{N}
+					\begin{pmatrix}
+	    				0 & 0\\
+						0 & 0
+	  				\end{pmatrix}
+	  			\right) 
+	  		= dim(\mathbb{R}^2) 
+	  		= 2. 
+	\]
+	
+	Note that the eigenvectors 
+	$\begin{pmatrix}
+	    \alpha \\ 0
+	  \end{pmatrix}$ 
+	and 
+	$\begin{pmatrix}
+	    0\\\beta
+	  \end{pmatrix}$ 
+	are linearly independent!
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Geometric and Algebraic Multiplicity: Example}
+	Let 
+	$A = \begin{pmatrix}
+	    	1 & 1\\
+			0 & 1
+	  	  \end{pmatrix}$
+ 	then 
+	\[ 
+	\chi_A(\lambda) 
+		= \det\begin{pmatrix}
+	    		\lambda-1 & -1\\
+				0 & \lambda-1
+	  		   \end{pmatrix} 
+	 	= (\lambda-1)^2
+	\]
+	so the algebraic multiplicity of $\lambda_1 = 1$ is $m_1 = 2$.
+	
+	The geometric multiplicity is
+	\begin{align*}
+		q_1 
+			&= dim(
+				\mathcal{N}\{I-A\})
+			= dim(\mathcal{N}
+				\begin{pmatrix}
+	    			0 & -1\\
+					0 & 0
+	  			\end{pmatrix}) \\
+	  		&= dim(\{x\in\mathbb{R}^2 \mid x_2 = 0\}) 
+			= 1 \neq m_1 
+	\end{align*}
+	
+	What are the eigenvectors assocaited with $A$?
+	\[ 
+		(\lambda I-A)x 
+			= \begin{pmatrix}
+	    		0 & 1\\
+				0 & 0
+	  		  \end{pmatrix}
+			  \begin{pmatrix}
+	    		x_{11}\\
+				x_{12}
+	  		  \end{pmatrix} = 
+			  \begin{pmatrix}
+	    		x_{12}\\
+				0
+	  		  \end{pmatrix}
+			= \begin{pmatrix}
+	    		0 \\ 0
+	  		  \end{pmatrix}
+			\Rightarrow x_{12} = 0 
+	\]
+	so $\begin{pmatrix}
+	    \alpha\\0
+	  \end{pmatrix}$ are the eigenvectors associated with $\lambda_1$.  There are \underline{not} two linearly independent eigenvectors.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Linearly Independent Eigenvectors}
+	In general we have,
+	\begin{lemma}
+		Let $A \in \mathbb{C}^{n\times n}$, then there are
+		$n$-linearly independent eigenvectors if and only if 
+		\[
+		\text{algebraic multiplicity} = \text{geometric multiplicity}
+		\]
+		for each eigenvalue of $A$.
+	\end{lemma}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Linearly Independent Eigenvectors: Proof}
+	\begin{proofstart}
+		First prove that if $\lambda_i \neq \lambda_j$ then
+		\[ 
+			\mathcal{N}(\lambda_iI-A) \cap
+			\mathcal{N}(\lambda_jI-A)
+			= \{0\}. 
+		\]
+		
+		To prove the claim, suppose not, then 
+		\[ 
+			\exists x \neq 0 \text{ such that } x \in \mathcal{N}(\lambda_iI-A) \text{ and } x \in \mathcal{N}(\lambda_jI-A) 
+		\]
+		\begin{align*}
+		\iff &\qquad Ax = \lambda_i x \text{ and } Ax = \lambda_j x \\
+		\iff &\qquad \lambda_ix = \lambda_jx \\
+		\iff &\qquad (\lambda_i-\lambda_j)x = 0 \\
+		\iff &\qquad \lambda_i = \lambda_j
+		\end{align*}
+		which is a contradiction.	
+	\end{proofstart}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Linearly Independent Eigenvectors: Proof}
+
+	\begin{proofend}
+	
+		Note that the number of linearly independent eigenvectors associated with $\lambda_i$ is the geometric multiplicity $q_i$ since we can find $q_i$ linearly independent vectors that span $\mathcal{N}(\lambda_i-A)$.
+	
+		\vspace{0.5cm}
+			
+		The previous claim shows that if $x_i \in \mathcal{N}(\lambda_iI-A)$ then $x_i \notin \mathcal{N}(\lambda_jI-A)$ which implies that there are $\sum q_i$ linearly independent eigenvectors of $A$.  Since $\sum m_i = n$, the lemma follows.
+		
+		\vspace{0.5cm}
+		
+		Note that if the eigenvalues are all distinct then $m_i = 1$.  Also since $1 \leq q_i \leq m_i$, for each $i$, we must have that the algebraic multiplicity equals the geometric multiplicity.
+		
+	\end{proofend}
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Linearly Independent Eigenvectors}
+	Suppose that there are $n$-linearly independent eigenvectors (where some of the eigenvalues might be repeated), then we can write
+	\begin{align*}
+		&
+		\begin{pmatrix} 
+			Ax_1 & Ax_2 & \cdots & Ax_n
+		\end{pmatrix}
+		= \begin{pmatrix}
+ 			\lambda_1x_1 & \lambda_2x_2 & \cdots & \lambda_nx_n
+ 		  \end{pmatrix}	 \\
+ 		\iff &
+		A 
+		\underbrace{
+			\begin{pmatrix} 
+				x_1 & x_2 & \cdots & x_n
+		  	\end{pmatrix}
+		}_S
+		= \underbrace{
+			\begin{pmatrix} 
+				x_1 & x_2 & \cdots & x_n
+		  	\end{pmatrix}
+		  }_S
+		  \underbrace{
+		  	\begin{pmatrix}
+	    		\lambda_1 & 0 & \cdots & 0 \\
+	    		& \ddots \\
+	    		0 & 0 & \cdots & \lambda_n
+	  	  	\end{pmatrix}
+	  	  }_{\Lambda} \\
+	  	\iff &
+	  	AS = S\Lambda
+	\end{align*}
+	
+	Since the eigenvectors are linearly independent, $S$ is invertible.  Therefore
+	\begin{align*}
+		& A = S\Lambda S^{-1}  \\
+		\iff & \Lambda = S^{-1}AS 
+	\end{align*}
+	Therefore, we say that $S$ diagonalizes $A$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Similarity Transformation}
+	\begin{definition}
+		Two matrices, $A$ and $B$ are said to be \underline{similar} if
+		$\exists $ an invertible $T$ such that 
+		\[ 
+			A = TBT^{-1}.
+		\]		
+	\end{definition}
+
+	\begin{lemma}
+		Similar matrices have the same \underline{eigenvalues}.	
+	\end{lemma}
+	\begin{proof}
+		Let $(\lambda,x)$ be an eigenpair of $A$, then
+		\begin{align*}
+			& Ax = \lambda x\\
+			\iff & TBT^{-1}x = \lambda x\\
+			\iff & BT^{-1}x = \lambda T^{-1}x\\
+			\iff & By = \lambda y \text{ where } y = T^{-1}x\\
+			\iff & (\lambda,y) \text{ is an eigenpair of }B\\
+		\end{align*}		
+	\end{proof}
+	\end{frame}
+
+
+\end{document}

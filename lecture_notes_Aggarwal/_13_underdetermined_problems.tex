@@ -1,0 +1,79 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Underdetermined Problems}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Section 3.15: Underdetermined Problems}
+		Given $Ax = b$ where $A$ is fat, i.e. fewer equations than unknowns,
+	solve the following problem:
+		\begin{mini*}|s|
+		{}{\norm{x}_2}{}{}
+		\addConstraint{Ax = b}	
+		\end{mini*}
+	where
+	$A = \left(
+		\begin{array}{c}
+		y_1^H\\
+		\vdots\\
+		y_m^H
+		\end{array}
+		\right)$, 
+	$x = \left(
+		\begin{array}{c}
+		x_1\\
+		\vdots\\
+		x_n
+		\end{array}
+		\right)$, 
+	
+	and $y_i \in \mathbb{C}^n$ and $b \in \mathbb{C}^m$.
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Section 3.15: Underdetermined Problems, cont.}
+	$Ax = b$ is a set of inner product constraints
+	\begin{align*}
+	y_1^Hx &= b_1\\
+	\vdots\\
+	y_m^Hx &= b_m
+	\end{align*}
+	
+	\vfill
+	
+	Let $M = span\{y_1, \cdots, y_m\}$.
+	
+	\vfill
+	
+	Theorem 3.4 implies that $x_0 = \arg\min\norm{x } \in M$
+	\[ \Rightarrow x_0 = \sum c_jy_j = A^Hc \]
+	and that $c$ satisfies
+	\[ R\cbf = \bbf \text{ where } R = AA^H \]
+	if $\{y_1, \cdots, y_m\}$ are linearly independent then
+	\[ \cbf = (AA^H)^{-1}\bbf \qquad \Rightarrow \qquad x_0 =
+	\underbrace{A^H(AA^H)^{-1}}_{\text{pseudo-inverse}}\bbf \]	
+\end{frame}
+
+
+	
+
+
+
+\end{document}

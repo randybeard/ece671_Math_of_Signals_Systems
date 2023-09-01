@@ -1,0 +1,438 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Approximation Theory}
+\frame{\sectionpage}
+
+
+%----------------------------------
+\begin{frame}\frametitle{Projection and Inner Product}
+\begin{itemize}
+	\item How does inner product represent a projection?
+	
+	\item Recall that
+	\[ 
+	\iprod{ x,y} = \norm{ x }\norm{ y } cos \theta 
+	\]
+	\begin{center}
+	\includegraphics[width=2in]{figures/chap3_projection}
+	\end{center}
+	
+	\item In 2-D $\iprod{ x,y}$ represents the length of the projection of $x$ in the direction of $y$.
+
+	\item In general, inner products represent (non-orthogonal) projection of one vector onto another.
+\end{itemize}
+\end{frame}
+
+
+%----------------------------------
+\begin{frame}\frametitle{Approximation Problem}
+	\begin{itemize}
+	\item Let $\mathbb{S}$ be a Hilbert space, and let $x \in \mathbb{S}$.
+
+	\item Let $\{p_1, \dots, p_n \}$ be a set of vectors, all in $\mathbb{S}$.
+	\item Find $\hat{x} \in \text{span}\{ p_1, \ldots p_n \}$ that minimizes $\norm{x-\hat{x}}$.
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Approximation Problem, cont}
+	\begin{itemize}
+	
+	\item Let $\hat{x} = c_1 p_1 + \ldots + c_n p_n \in \text{span}\{p_1, \dots, p_n\}$.
+	\item By the projection theorem, the error
+	\begin{align*}
+		e &= x - \hat x \\
+		  &= x - c_1 p_1 - \ldots - c_n p_n
+	\end{align*}
+	is minimized if 
+	\[
+	e \perp \text{span}\{ p_1, \ldots, p_n\}.
+	\]
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Approximation Problem, cont}
+	\[
+	e \perp \text{span}\{ p_1, \ldots, p_n\}.
+	\]
+	iff
+	\begin{align*}
+		\iprod{ e, p_1} &= 0\\
+		\iprod{ e, p_2} &= 0\\
+		\vdots\\
+		\iprod{ e, p_n } &= 0	
+	\end{align*}
+	iff
+	\begin{align*}
+		\iprod{ x - c_1p_1 - \ldots c_np_n, p_1 } &= 0\\
+		\vdots\\
+		\iprod{ x - c_1p_1 - \ldots c_np_n, p_n } &= 0
+	\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Approximation Problem, cont}
+	By properties of the inner product we can write this as
+	\begin{flalign*}
+	\iprod{ x,p_1 } - c_1 \iprod{ p_1, p_1} - \cdots - c_n \iprod{ p_n, p_1} &= 0\\
+	\vdots\\
+	\iprod{ x,p_n} - c_1 \iprod{ p_1,p_n} - \cdots - c_n \iprod{ p_n, p_n} &= 0
+	\end{flalign*}
+	or in matrix notation,
+	\[
+	\underbrace{
+		\left(
+		\begin{array}{ccc}
+		\iprod{ p_1, p_1} & \cdots & \iprod{ p_n, p_1}\\
+		\vdots & & \vdots \\
+		\iprod{ p_1, p_n} & \cdots & \iprod{ p_n, p_n}
+		\end{array}
+		\right)
+	}_{R}
+	\underbrace{\left(
+	\begin{array}{c}
+	c_1\\
+	\vdots\\
+	c_n
+	\end{array}
+	\right)}_{\cbf}
+	= 
+	\underbrace{\left(
+	\begin{array}{c}
+	\iprod{ x, p_1}\\
+	\vdots\\
+	\iprod{ x, p_n}
+	\end{array}
+	\right)}_{\pbf}
+	\]
+	$R$ is called the Grammian of the set $\{p_1,\ldots,p_n\}$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{The Grammian of a set}
+	\begin{definition}[Grammian]
+	Given a set $\{p_1, \dots, p_n\}$ of vectors in $\mathbb{S}$, the \underline{Grammian} of the set is the matrix
+	\[
+	R = \begin{pmatrix}
+ 			\iprod{ p_1, p_1} & \cdots & \iprod{ p_n, p_1}\\
+			\vdots & & \vdots \\
+			\iprod{ p_1, p_n} & \cdots & \iprod{ p_n, p_n}
+ 		\end{pmatrix}
+	\]	
+	\end{definition}
+	
+	\par\noindent Note that $R^H = R$
+	
+	\par\noindent We also have the following theorem:
+	
+	\begin{theorem}[Moon, Theorem 3.1]
+	The Grammian $R$ is positive definite iff the set of vectors 
+	$\{p_1,\ldots p_n\}$ are linearly independent.
+	\end{theorem}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof}
+	Let $y \in \mathbb{S}$ then 
+	\begin{flalign*}
+	y^H R y &= (\bar{y}_1 \cdots \bar{y}_n) 
+	\left(
+	\begin{array}{ccc}
+	\iprod{ p_1, p_1 } & \ldots & \iprod{ p_n,p_1}\\
+	\vdots &  & \vdots \\
+	\iprod{ p_1,p_n} & \ldots & \iprod{ p_n, p_n }
+	\end{array}
+	\right)
+	\left(
+	\begin{array}{c}
+	y_1\\
+	\vdots\\
+	y_n
+	\end{array}
+	\right)\\
+	&= \left( \sum_{i=1}^n \bar{y}_i\iprod{ p_1,p_i} \ldots
+	\bar{y}_i\sum_{i=1}^n \iprod{ p_n,p_i} \right)
+	\left( \begin{array}{c}
+	y_1\\
+	\vdots\\
+	y_n
+	\end{array}
+	\right)\\
+	&= \sum_{j=1}^n \sum_{i=1}^n \bar{y}_iy_j \iprod{ p_j, p_i}\\
+	&= \iprod{ \sum y_jp_j, \sum y_i,p_i} = \parallel \sum y_i
+	p_i \parallel^2 \geq 0
+	\end{flalign*}
+	Therefore $R$ is always positive semi-definite.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof, cont.}
+\begin{description}
+\item[($\Rightarrow$):]
+	Suppose that $R$ is pd then
+	\begin{flalign*}
+	y^HRy &= \norm{ \sum y_ip_i }^2 > 0\\
+	&\Rightarrow \sum y_i p_i \neq 0 \text{ for all nonzero $y \in \mathbb{S}$}\\
+	&\Rightarrow \{p_1,\cdots p_n\} \text{ is linearly independent}
+	\end{flalign*}
+
+\item[($\Leftarrow$):]	
+	Conversely suppose $\{p_1, \cdots p_n\}$ is linearly independent, but
+	$R$ is only psd.  $R$ is psd implies that $\exists y \neq 0$ such that 
+	\begin{align*} 
+		& y^HRy = \norm{ \sum y_ip_i }^2 = 0 \\
+		\Rightarrow & \sum y_ip_i = 0 \\ 
+		\Rightarrow & \{p_1, \cdots p_n\} \text{is linearly dependent.}
+	\end{align*}
+	Which contradicts the assumption that R is psd.
+\end{description}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Orthogonality Theorem}
+	\begin{theorem}[Moon, Theorem 3.2]	
+	Let $p_1,p_2, \cdots p_n $ be data vectors (or basis vectors) in a
+	Hilbert space $\mathbb{S}$.  Let $x \in \mathbb{S}$.  Let $e$ be defined as
+	\[ e \defeq x - \hat{x} = x - \sum_{j=1}^n c_j p_j,\]
+	then $e$ is minimized when it is orthogonal to each of the data
+	vectors, i.e.
+	\[ \iprod{ e, p_j} = 0 \qquad j=1,\ldots, n \]
+	Equivalently
+	\[
+	R\cbf = \pbf.
+	\]
+	\end{theorem}
+	\begin{proof}
+		Follows directly from projection theorem.
+	\end{proof}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Calculus-Based Approach (Alternative proof)}
+	Rather than using the projection theorem, we can derive the same result using calculus.
+	
+	\vfill
+	
+	\par\noindent{\bf Problem Statement:}
+	Let $\ebf = x - \sum_{i=1}^n c_i p_i$.  Find $\cbf=(c_1, \dots, c_n)^\top$ that minimizes $\norm{\ebf}$.
+	
+	\vfill
+	
+	\par\noindent{\bf Solution:}
+	First note that minimizing $\norm{\ebf}^2$ is equivalent to minimizing $\norm{e}$.
+	Also note that 
+	\begin{align*}
+	\norm{e}^2 &= \iprod{ x - \sum c_jp_j, x - \sum c_j p_j}\\
+		&= \norm{x}^2 - 2 Re\{ \sum_{i=1}^n \bar{c}_i\iprod{
+			x,p_i}\} + \sum \sum c_j \bar{c}_i \iprod{ p_j, p_i}	 \\
+		&= \norm{x}^2 - 2 Re\{ \cbf^H\pbf \} +\cbf^H R \cbf.
+	\end{align*}
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Calculus-Based Approach, cont.}
+
+	To minimize 
+	\[
+	\norm{e}^2 = \norm{x}^2 - 2 Re\{ \cbf^H\pbf \} +\cbf^H R \cbf
+	\]
+	differentiate with respect to $\cbf$ and set to zero.  This
+	will be a local minima if the second derivative is psd.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Calculus-Based Approach, cont.}
+	From Moon Appendix we have
+	\begin{align*}
+	\frac{\partial}{\partial \bar{\cbf}} Re\{\cbf^H \pbf\} &= \frac{1}{2}\pbf \\
+	\frac{\partial}{\partial \bar{\cbf}} \cbf^H R \cbf &= R\cbf
+	\end{align*}
+	Therefore
+	\[ 
+	\frac{\partial \norm{e}^2}{\partial \bar{\cbf}} = -\pbf + 
+	R \cbf = 0 \qquad \Rightarrow \qquad R \cbf = \pbf 
+	\]
+	In addition, we have that
+	\[ 
+	\frac{\partial^2 \norm{e}^2}{\partial \bar{\cbf}} = R \geq 0.
+	\]
+	Therefore the solution of $R\cbf=\pbf$ minimize $\norm{e}$.
+	
+	$R\cbf = \pbf$ is the same equation we obtained using the
+	projection theorem.
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Matrix Representation}
+	\begin{itemize}
+	\item 	Stack the vectors $\{ p_1, \ldots p_n\}$ in a matrix
+	\begin{align*}
+	A &= \begin{pmatrix}p_1 & p_2 & \ldots & p_n \end{pmatrix} \\
+ 	\cbf &= \begin{pmatrix} c_1 & c_2 & \ldots & c_n \end{pmatrix}^\top	
+	\end{align*}
+	
+	\item Then $\hat{x} = \sum c_j p_j = A \cbf$.
+	\item Therefore $\ebf = x - \hat{x} = x - A\cbf$.
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Matrix Representation, cont.}
+	\begin{itemize}
+	\item Project $\ebf$ onto $\{p_1 \ldots p_n\}$:
+		\begin{align*}
+		\iprod{ x-A\cbf, p_1} &= p_1^H (x-A\cbf) = 0\\
+		\vdots\\
+		\iprod{ x-A\cbf, p_n} &= p_n^H (x - A \cbf) = 0
+		\end{align*}
+		
+	\item Note that $A^H = \left[ \begin{array}{c} p_1^H \\ \vdots \\
+	p_n^H \end{array} \right]$.
+	
+	\item Rewrite as
+	\begin{align*}
+	& A^H(x-A\cbf) = 0 \\
+	\Rightarrow & \underbrace{A^HA}_{R}\cbf = \underbrace{A^Hx}_{\pbf}
+	\end{align*}
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Matrix Representation, cont.}
+	\begin{itemize}	
+	\item If $\{p_1, \ldots p_n\}$ are linearly independent then $R > 0$ which implies that $R^{-1}$ exists, so
+	\[ \cbf = (A^HA)^{-1}A^Hx \]
+
+	\item Since $\hat{x} = A\cbf$ we have that
+	\[
+	\hat{x} = A (A^H A)^{-1} A^H x
+	\]
+	is the best approximation to $x$ in $\text{span}\{p_1, \dots, p_n\}$.
+	
+	\item {\bf Fact:}  $P_A = A(A^HA)^{-1}A^H$ is a projection operator from $S$ to $span\{p_1,\ldots,p_n\}$
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Application:Polynomial Approximation}
+	\begin{itemize}
+	\item Suppose you are given a real continuous function $f(t)$ and you would like to approximate it by an $m^{th}$ order polynomial on the interval $[a,b]$.
+	\item Let the basis vectors be $\{1,t,\ldots,t^m\}$.
+	\item Then $\hat{f}(t) = c_1 + c_2t + \cdots + c_{m+1} t^m$
+	\item Define the inner product as $\iprod{ f,g} = \displaystyle
+	\int_{a}^{b} f(t)g(t) dt$
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Application: Polynomial Approximation, cont.}	
+	
+	Then the orthogonality theorem implies that the ``best'' approximation is
+	given by 
+	\begin{align*}
+	\iprod{ f - \hat{f}, 1} &= 0\\
+	\vdots\\
+	\iprod{ f - \hat{f}, t^m } &= 0
+	\end{align*}
+	or
+	\[
+	\underbrace{
+		\left( \begin{array}{ccc}
+		\iprod{ 1,1 } & \cdots & \iprod{ t^m, 1}\\
+		\vdots & & \vdots \\
+		\iprod{ 1,t^m} & \cdots & \iprod{ t^m, t^m }
+		\end{array}
+		\right)}_{\text{ Grammian Matrix }}
+	\left(
+	\begin{array}{c}
+	c_1\\
+	\vdots\\
+	c_{m+1}
+	\end{array}
+	\right)
+	=
+	\left( \begin{array}{c}
+	\iprod{ f,1 }\\
+	\vdots\\
+	\iprod{ f, t^m }
+	\end{array}
+	\right)
+	\]	
+	or
+	\[ R \cbf = \pbf.  \]
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Application: Linear Regression}
+	\begin{itemize}
+	\item Suppose you have a number of data points that you are trying to fit to a line.
+		\begin{center}
+		\includegraphics[width=1.5in]{figures/chap3_linear_regression}
+		\end{center}
+		
+	\item Given $(x_i, y_i) \qquad i = 1,\ldots N$
+	
+	\item The equation for a line is $y = ax + b$
+	\item {\bf Problem:}  Find $a$ and $b$ that minimizes the mean squared error $\sum_{i=1}^N \abs{y_i - ax_i - b}^2$
+	\end{itemize}	
+\end{frame}
+ 
+%----------------------------------
+\begin{frame}\frametitle{Application: Linear Regression, cont.}	
+	\begin{itemize}
+	\item For each data point we have
+	\[ e_i = y_i - ax_i - b \]
+	where $e_i$ is the error for the $i^{th}$ data point.  
+	
+	\item Let
+	\[ \ybf = \left( \begin{array}{c} y_1\\ \vdots \\ y_N \end{array}
+	\right), \quad 
+	\ebf = \left( \begin{array}{c} e_1 \\ \vdots \\
+	e_N \end{array} \right), \quad
+	A = \left( \begin{array}{cc} x_1 & 1
+	\\ \vdots & \vdots \\ x_N & 1 \end{array} \right), \quad
+	\cbf
+	= \left( \begin{array}{c} a \\ b \end{array} \right) \]
+	
+	\item Then $\ebf = \ybf-A\cbf$.
+	\end{itemize}	
+\end{frame}
+ 
+%----------------------------------
+\begin{frame}\frametitle{Application: Linear Regression, cont.}	
+	\begin{itemize}
+	\item Project the error $\ebf$ on the data vector (columns of $A$) and set to zero:
+	\[
+	A^H \ebf = A^H (\ybf - A\cbf) =0
+	\]
+	
+	\item Therefore
+	\[ A^H A \cbf = A^H \ybf \]
+	
+	\item Giving the minimum least squares solution
+	\[ \cbf = (A^H A)^{-1} A^H \ybf. \]
+	
+	\end{itemize}	
+\end{frame}
+
+
+
+\end{document}

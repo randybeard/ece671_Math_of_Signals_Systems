@@ -1,0 +1,221 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Metric Spaces}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Spaces}
+
+\begin{itemize}
+\item One of the objectives of this course is to develop tools that work in a wide variety of settings.  
+\item We will mostly focus on \underline{finite dimensional Hilbert spaces}, which include:
+	\begin{itemize}
+		\item $\mathbb{R}^n$, $\mathbb{C}^n$, $\mathbb{C}^{m\times n}$,
+		\item the set of all functions with finite integral,
+		\item the set of all finitely summable sequences,
+		\item binary vectors, binary sequences.
+	\end{itemize}
+\item But does not include important objects like 
+	\begin{itemize}
+	\item rotations matrices, quaternions, homogeneous transformations.	
+	\end{itemize}
+\item To make things clear, we will develop the theory systematically in the following order:
+	\begin{enumerate}
+		\item Metric space
+		\item Norm space / Banach space
+		\item Inner product space / Hilbert space
+	\end{enumerate}
+\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Metric Spaces}
+
+\begin{definition}[Metric Space] A \underline{metric space} is a pair $(\mathbb{X},d)$ where $\mathbb{X}$ is a set and 
+	\[
+	d:\mathbb{X} \times \mathbb{X} \to \mathbb{R}
+	\]
+	is a metric defined over $\mathbb{X}$.\\
+\end{definition}
+	
+A metric is a measure of distance between elements in a set.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Metric Spaces}
+\begin{definition}[Metric]
+Let $\mathbb{X}$ be a set.  Then 
+$d:\mathbb{X} \times \mathbb{X} \to \mathbb{R}$ is a metric if:
+
+\begin{align*} 
+(M1) \qquad & d(x,y) = d(y,x), \quad \forall x,y \in \mathbb{X} \\
+(M2) \qquad & d(x,y) \geq 0, \quad \forall x,y \in \mathbb{X} \\
+(M3) \qquad & d(x,y) = 0, \quad \iff x = y\\
+(M4) \qquad &d(x,z) \leq d(x,y) + d(y,z), \quad \forall x,y,z \in \mathbb{X}
+\end{align*}
+\end{definition}
+
+(M4) is called the \underline{Triangle inequality}.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Metric Spaces}
+
+\begin{example}[E1]
+
+$(\mathbb{R}, d)$ where $d(x,y) \defeq |x-y|$ is a metric space.
+
+Note that 
+\begin{itemize}
+	\item (M1) $|x-y| = |y-x|$, $\forall x,y \in \mathbb{R}$.
+	\item (M2) $|x-y|\geq 0$, $\forall x,y \in \mathbb{R}$.	
+	\item (M3) $|x-y| = 0$, if $x=y$.	
+	\item (M4) $|x-z|\leq |x-y| + |y-z|$ $\forall x,y,z \in \mathbb{R}$. 
+\end{itemize}
+\end{example}
+
+To convince yourself (M4), draw a picture.  Note, a picture is not a proof.
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Metric Spaces}
+
+\begin{example}[E2]
+
+$(\mathbb{R}^n, d)$ where 
+\[
+d(x,y) \defeq \left( \sum_{i=1}^{n} |x_i - y_i|^2 \right)^{\frac{1}{2}}
+\]
+where $x=(x_1, \dots, x_n)^\top$ and $y=(y_1, \dots, y_n)^\top$.
+
+Verify that $d(\cdot, \cdot)$ satisfies (M1)-(M4).
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Metric Spaces}
+
+\begin{example}[E3]
+
+$(\mathbb{R}^n, d)$ where 
+\[
+d(x,y) \defeq \left( \sum_{i=1}^{n} |x_i - y_i|^p \right)^{\frac{1}{p}}
+\]
+where $p\geq 1$.
+
+For general $p\geq 1$, the triangle inequality is a nontrivial and famous results.
+\end{example}
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Metric Spaces}
+
+\begin{example}[E4 bounded sequence space]
+
+Let $\boldsymbol{\ell}^\infty$ be the set of all sequences of complex numbers where each number is bounded, i.e., 
+\[
+x = (x_1, x_2, x_3, \dots) \in \boldsymbol{\ell}
+\]
+if $x_i\in\mathbb{C}$ and $\abs{x_i}<\infty$.
+
+$(\boldsymbol{\ell}, d)$ is a metric space where
+\[
+d(x, y) = \sup_{j\in\mathbb{N}} \abs{x_i - y_i}.
+\]
+\end{example}
+
+Verify (M1)-(M4).
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Metric Spaces}
+
+\begin{example}[E5 continuous function space]
+\begin{itemize}
+\item Let $C[a,b]$ be the set of all continuous functions on $[a,b]$, i.e., \\
+\indent \indent i.e. $ x \in C[a,b] \Rightarrow x(t) $ is continuous on $[a,b]$.\\
+Let 
+\[ 
+d(x,y) = \max_{t \in [a,b]} |x(t)-y(t)| 
+\]
+then $(C[a, b], d)$ is a metric space.
+
+\item This is a different perspective than calculus.  In calculus you consider one function at a time.  In this class, a function is one \underline{point} in a larger metric space.
+\end{itemize}
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Metric Spaces}
+
+\begin{example}[E6 discrete metric space]
+
+Let $\mathbb{X}$ be any set, e.g., the set of three legged dogs, and let
+\[
+d(x,y) = \begin{cases}
+ 1 & \text{~if~} x\neq y \\
+ 0 & \text{~otherwise}	
+ \end{cases}.
+ \]
+ Then $(\mathbb{X}, d)$ is a metric space since
+\begin{itemize}
+	\item (M1) $d(x,y) = d(y,x)$, $\forall x,y \in \mathbb{X}$.
+	\item (M2) $d(x,y) \geq 0$, $\forall x,y \in \mathbb{X}$.	
+	\item (M3) $d(x,y) = 0$, if $x=y$.	
+	\item (M4) $d(x,z)\leq d(x,y) + d(y,z)$ $\forall x,y,z \in \mathbb{X}$. 
+\end{itemize}
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Metric Spaces}
+
+\begin{example}[E7 binary vector space]
+
+Let $\mathbb{X}=\{0,1\}^n$ be the set of binary vectors, i.e \\
+$x\in\mathbb{X} \Rightarrow x=(x_1, x_2, \dots, x_n)$ where $x_i\in \{0, 1\}$.
+Let 
+\[ 
+d(x,y) = \sum_{i=1}^{n}{h(x_i - y_i)} 
+\]  
+where
+\[ 
+h(w) = \begin{cases} 
+	1 & \text{ if } \qquad w \neq 0 \\ 
+	0 & \text{ otherwise }
+\end{cases}.
+\]
+$h$ is called the hamming distance, and simply counts the number of elements in $x$ and $y$ that are different.
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Metric Spaces / Norm Spaces / Inner Product Spaces}
+
+\begin{itemize}
+\item Later in the chapter, 	we will later introduce the concepts of a norm and a norm space, and an inner product and inner product spaces.
+\item Many of the metric spaces introduced above are also norm spaces and inner product spaces, but not all.  
+\item Metric spaces are the most general of the three.  
+\item Before introducing the concept of a norm and a normed space, we develop general tools that also work for metric spaces.
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}

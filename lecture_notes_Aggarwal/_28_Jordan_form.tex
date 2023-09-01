@@ -1,0 +1,339 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Jordan Form}
+\frame{\sectionpage}	
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form}
+	What if the algebraic multiplicity does not equal the geometric
+	multiplicity? (i.e., $q_i \neq m_i$ for some eigenvalue $\lambda_i$ of $A$)?
+	
+	\vfill
+	
+	Then we cannot diagonalize $A$ using a similarity transformation.
+	However we can ``almost'' diagonalize $A$.
+	
+	\vfill
+	
+	The resulting ``almost diagonal`` matrix is called the \underline{Jordan form} of $A$.	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	
+	Suppose the algebraic multiplicity of $\lambda_1$ is $m_1 > 1$ but the
+	geometric multiplicity is $q_1 = 1$.
+	
+	\vfill
+	
+	Then $\exists$ one linearly independent eigenvector $x_1$ s.t. $Ax_1 = \lambda_1 x_1$.
+	
+	\vfill
+	
+	Now form the following chain:
+	\begin{align*}
+		A\xi_{11} &= \lambda_1 \xi_{11} + x_1\\
+		A\xi_{12} &= \lambda_1 \xi_{12} + \xi_{12}\\
+		\vdots\\
+		A \xi_{1,m_1} &= \lambda_1 \xi_{1,m_1} + \xi_{1,({m_1}-1)}
+	\end{align*}
+	$\xi_{11} \cdots \xi_{1,m_1}$ are called the ``generalized eigenvectors'' associated with $x_1$.	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	Note that we can write the generalized eigenvector equations as
+	{\footnotesize
+	\[ 
+		A \begin{pmatrix}
+	    	x_1 & \xi_{11} & \cdots & \xi_{1,m_1}
+	  	  \end{pmatrix}
+		= 
+			\begin{pmatrix}
+	    		x_1 & \xi_{11} & \cdots & \xi_{1,m_1}
+	  		\end{pmatrix}
+	  		\underbrace{
+				\begin{pmatrix}
+	    			\lambda_1 & 1 & \ddots \\
+	    			& \lambda_1 & 1 & 0\\
+	    			\ddots & & \lambda_1 & \ddots & \ddots \\
+	    			& 0 & & \ddots & 1\\
+	    			& & \ddots & & \lambda_1\\
+	  			\end{pmatrix}
+	  		}_{\text{This is called a Jordan block}}
+	\]
+	}
+
+	\begin{lemma}
+		If the geometric multiplicity of $\lambda_i$ is $q_i = 1$ then the associated $m_1-1$ generalized 	eigenvectors are linearly independent of the other eigenvectors.
+	\end{lemma}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	If $1 < q_i < m_i$ then the problem is slightly more complicated. 
+	
+	\vfill
+	
+	There are precisely $q_i$ linearly independent eigenvectors associated
+	with $\lambda_i$ and there will be $q_i$ Jordan blocks associated with
+	$\lambda_i$.  What are the sizes of the Jordan blocks?  For example,
+	suppose $m_i = 4$ and $q_i = 2$, the possible Jordan blocks are:
+	{\footnotesize
+		\[ 
+			\begin{pmatrix}
+		    	\lambda_1 & 1 & 0\\
+		    	0 & \lambda_1 & 1\\
+		    	0 & 0 & \lambda_1
+		  	\end{pmatrix} 
+		  	\text{ and }
+			\begin{pmatrix}
+		    	\lambda_1
+		  	\end{pmatrix}
+		  	\text{ i.e., } 
+			\begin{pmatrix}
+		    	\lambda_1 & 1 & 0 & 0\\
+		    	0 & \lambda_1 & 1 & 0\\
+		    	0 & 0 & \lambda_1 & 0\\
+		    	0 & 0 & 0 & \lambda_1
+		  	\end{pmatrix}
+		  	\text{ or }
+		  	\begin{pmatrix}
+		    	\lambda_1 & 0 & 0 & 0\\
+		    	0 & \lambda_1 & 1 & 0\\
+		    	0 & 0 & \lambda_1 & 1\\
+		    	0 & 0 & 0 & \lambda_1
+		  	\end{pmatrix}
+		\]
+	}
+	or
+	\[ 
+		\begin{pmatrix}
+	    	\lambda_1 & 1\\
+	    	0 & \lambda_1
+	  	\end{pmatrix} 
+	  	\text{ and }
+		\begin{pmatrix}
+	    	\lambda_1 & 1\\
+	    	0 & \lambda_1
+	  	\end{pmatrix}
+	  	\text{ i.e., }
+	  	\begin{pmatrix}
+	    	\lambda_1 & 1 & 0 & 0\\
+	    	0 & \lambda_1 & 0 & 0\\
+	    	0 & 0 & \lambda_1 & 1\\
+	    	0 & 0 & 0 & \lambda_1	  		
+	  	\end{pmatrix}
+	\]	
+	Which option is correct?	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	To decide, generate the generalized eigenvector for each eigenvector
+	and pick the linearly independent ones.
+	
+	Example:  Let
+	\[ 
+		A = \begin{pmatrix}
+	    		1 & 1 & -1 & 1\\
+	    		0 & 1 & 0 & 1\\
+	    		0 & 0 & 1 & 1\\
+	    		0 & 0 & 0 & 1
+	  		\end{pmatrix}
+	\]
+	Since $\det(\lambda I - A) = (\lambda-1)^4$ we have $\lambda_1 = 1$
+	and $m_1 = 4$.
+	\[ 
+		q_1 = dim(\mathcal{N}
+				\begin{pmatrix}
+	    			0 & -1 & 1 & -1\\
+	    			0 & 0 & 0 & -1\\
+	    			0 & 0 & 0 & -1\\
+	    			0 & 0 & 0 & 0
+	  			\end{pmatrix}
+	  		   ) 
+	  		= 2
+	\] 
+	since there are 2 linearly independent rows.
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	So there are two linearly independent eigenvectors:
+	\[ 
+		(\lambda_1I-A)x_1 
+			= \begin{pmatrix}
+	    		0 & -1 & 1 & -1\\
+	    		0 & 0 & 0 & -1\\
+	    		0 & 0 & 0 & -1\\
+	    		0 & 0 & 0 & 0
+	  		  \end{pmatrix}
+	  		  \begin{pmatrix}
+	    			x_{11}\\x_{12}\\x_{13}\\x_{14}
+	  		  \end{pmatrix}
+	  		= \begin{pmatrix}
+	    		-x_{12} + x_{13} - x_{14}\\-x_{14}\\-x_{14}\\0
+	  		  \end{pmatrix}
+	  		= \begin{pmatrix}
+	    		0\\0\\0\\0
+	  		  \end{pmatrix}
+	\]
+	\[ 
+		\implies x_{14} = 0 \text{ and } -x_{12}+x_{13}-x_{14} = 0 
+	\]
+	so
+	\[ 	
+		x_1 = \begin{pmatrix}
+	    		1\\0\\0\\0
+	  		  \end{pmatrix} 
+	  	\text{ is an eigenvector, and so is } 
+	  	x_2 = \begin{pmatrix}
+	    		0\\1\\1\\0
+	  		  \end{pmatrix}
+	\]	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	Find the possible generalized eigenvector associated with eigenvector $x_1$:
+	\[
+		A\xi_{11} = \xi_{11}+x_1 \Rightarrow (\lambda_1 I - A)\xi_{11} = -x_1 
+	\]
+	\[ 
+		\text{i.e. } -\xi_{112} + \xi_{113} - \xi_{114} = 1 \qquad \qquad \xi_{114} = 0 
+	\]
+	\[ 
+		\xi_{112} = \xi_{113} + 1 
+		\qquad \text{ so } \qquad 
+		\xi_{11} = \begin{pmatrix}1 \\ 2\\ 1 \\ 0 \end{pmatrix} 
+		\text{ is valid } 
+	\]
+	\[ 
+		(\lambda_1I-A)\xi_{12} = \xi_{12} 
+		\text{ so } 
+		\begin{pmatrix}
+	    	-\xi_{122} + \xi_{123} - \xi_{124} \\ -\xi_{124} \\ -\xi_{124}
+	  	\end{pmatrix}
+	  	= \begin{pmatrix}
+	    	1\\2\\1\\0
+	  	  \end{pmatrix} 
+	  	\leftarrow \text{ can't use }. 
+	\]	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	
+	{\bf Note:}
+		There are an infinite number of possibilities of generalized eigenvectors from each true eigenvector, but you can only pick ones that are linearly independent.  This second eigenvector forms a linearly dependent subset of one of the real eigenvectors.
+
+	\vfill
+	
+	Therefore, one Jordan block is of size 2.
+	
+	\vfill
+	
+	Also solve $(\lambda_1I-A)\xi_{21} = x_2$ i.e.
+	\[ 
+		\begin{pmatrix}
+	    	-\xi_{212} + \xi_{213} - \xi_{214} \\ -\xi_{214} \\ -\xi_{214} \\ 0
+	  	\end{pmatrix}
+	  	= \begin{pmatrix}
+	    	0\\1\\1\\0
+	  	  \end{pmatrix}
+	  	\Rightarrow \xi_{214} = 1, \xi_{213} = \xi_{212} + 1 
+	\]
+	so 
+	\(
+		\xi_{21} = \begin{pmatrix} 0\\1\\2\\1 \end{pmatrix}.
+	\)
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	In summary
+	\[ 
+		A
+		\underbrace{
+			\begin{pmatrix}
+	    		x_1 & \xi_{11} & x_2 & \xi_{21}
+	    	\end{pmatrix}
+	    }_{S} 
+	    = 
+	    \underbrace{
+	    	\begin{pmatrix}
+	    		x_1 & \xi_{11} & x_2 & \xi_{21}
+	  		\end{pmatrix}
+	  	}_{S}
+	  	\underbrace{
+	  		\begin{pmatrix}
+	  			1& 1 & 0 & 0\\
+	  			0 & 1 & 0 & 0\\
+	  			0 & 0 & 1 & 1\\
+	  			0 & 0 & 0 & 1
+			\end{pmatrix}
+		}_{J} 
+	\]
+	or
+	\[ 
+		A = SJS^{-1} 
+	\]
+	$J$ is called the ``Jordan'' form of $A$
+	
+	\vfill
+	
+	If the eigenvalues are distinct or $q_i = m_i$ for each $i$ then $J =
+	\Lambda$ (is diagonal).
+	
+	\vfill
+	
+	Otherwise $J$ is block diagonal with Jordan blocks along the diagonal
+	($q_i$ Jordan blocks for each eigenvalue).	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Jordan Form, cont.}
+	
+	Example:  suppose there are 3 eigenvalues with $\lambda_1 = 1,
+	\lambda_2 = 2, \lambda_3 = 3$, and $m_1=1, m_2=2, m_3=3$, and $q_1 =
+	1, q_2 = 1, q_3 = 2$.
+	There are two possible Jordan forms:
+	\[
+	\begin{pmatrix}
+	    \lambda_1\\
+	    & \lambda_2 & 1 && 0\\
+	    & & \lambda_2 & &\\
+	    &  & & \lambda_3 & 1\\
+	    & 0& & & \lambda_3\\
+	    & & & & & \lambda_3
+	  \end{pmatrix} \text{ or } 
+	\begin{pmatrix}
+	    \lambda_1\\
+	    & \lambda_2 & 1 && 0\\
+	    & & \lambda_2 & & \\
+	    & & & \lambda_3\\
+	    &0 & & & \lambda_3 & 1\\
+	    & & & & & \lambda_3
+	  \end{pmatrix}
+	\]
+\end{frame}
+
+
+\end{document}

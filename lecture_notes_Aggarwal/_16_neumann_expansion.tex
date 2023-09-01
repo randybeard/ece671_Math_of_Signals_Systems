@@ -1,0 +1,103 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Neumann Expansion}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Geometric Series}
+	One of the most important series in analysis is the geometric series
+	\[ 
+	S = 1 + x + x^2 + \ldots = \sum_{i=0}^{\infty}x^i 
+	\]
+	Noting that 
+	\begin{align*}
+		& 1 + xS = 1 + x + x^2 + \ldots = S \\
+		\Rightarrow \qquad & S(1-x) = 1 \\
+	\end{align*}
+	Therefore 
+	\[
+	S = \sum_{i=0}^{\infty} x^i = \frac{1}{1-x} = (1-x)^{-1} 
+	\]
+
+	\vfill
+	
+	The series converges if $|x| < 1$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Geometric Series for Operators (Neumann Expansion)}
+	For operators we have a similar expression:
+	\begin{theorem}[Moon Theorem 4.3]
+	Suppose $\norm{ \cdot }$ is a norm satisfying the submultiplicative property and $\norm{\Acal} < 1$.  Then $(I-\Acal)^{-1}$ exists and
+	\begin{align*}
+		(I-\Acal)^{-1} &= \sum_{i=0}^{\infty} \Acal^i 
+			= I + \Acal + \Acal^2 + \Acal^3 + \ldots\\
+		\text{ where } & \\
+		\Acal^2 &= \Acal\Acal \\
+		\Acal^3 &= \Acal\Acal^2 \\
+		\Acal^k &= \Acal\Acal^{k-1}.
+	\end{align*}
+\end{theorem}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Neumann Expansion, Proof}
+	Suppose that $(I-\Acal)^{-1}$ does not exist.  Then $\Ncal(I-A)$ is non-trivial.
+	
+	Therefore, $\exists x \neq 0$ such that 
+	\begin{align*}
+	(I-\Acal)x = 0 \quad &\iff \quad x = \Acal x \\
+	&\iff \quad \norm{ x } = \norm{\Acal x } \leq \norm{ \Acal }\norm{ x } < \norm{ x },
+	\end{align*}
+	which is a contradiction.  
+	
+	\vfill
+	
+	Therefore $(I-\Acal)^{-1}$ exists.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Neumann Expansion, cont.}
+	Note that $\norm{ \Acal^k } \leq \norm{ \Acal }^{k}$ since $\norm{ \cdot }$ satisfies the submultiplication property. 
+	
+	\vfill 
+	
+	Since $\norm{\Acal } < 1$
+	\[ 
+	\lim_{k\to \infty} \norm{ \Acal^k } = 0 \quad \iff \quad \lim_{k \to \infty}\Acal^k = 0 
+	\]
+	
+	\vfill
+	
+	Note that
+	\[ 
+	(I - \Acal) ( I + \Acal + \Acal^2 + \cdots + \Acal^{k-1}) = I-\Acal^k 
+	\]
+	$k \to \infty$ gives
+	\[ 
+	(I-\Acal)\left( \sum_{i = 0}^{\infty} \Acal^i \right) = I
+	\]
+	Therefore 
+	\[ 
+	\sum_{i=0}^{\infty} \Acal^i = (I-\Acal)^{-1}. 
+	\]
+\end{frame}
+
+
+\end{document}

@@ -1,0 +1,115 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{SVD and Numerically Sensitive Problems}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Numerically Sensitive Problems}
+	Suppose that we would like to solve
+	\[ 
+		Ax = b  
+	\]
+	where $A \in \mathbb{R}^{n\times n}$ and $rank(A) = n$ but the condition number $\mathcal{K}(A)$ is large.  Let $A= U\Sigma V^H$, then 
+	\begin{align*}
+		 A^{-1} 
+		 	&= V\Sigma^{-1} U^H\\
+			&= \sum_{j=1}^{n}\frac{\vbf_j \ubf_j^H}{\sigma_j}
+	\end{align*}
+	
+	so the solution to $Ax = b$ is
+	\[ 
+		x = A^{-1}b 
+		  = \sum_{j=1}^{n}\frac{\vbf_j \ubf_j^H}{\sigma_j}.
+	\]	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Numerically Sensitive Problems}
+	Recall that 
+	$\mathcal{K}(A) = \norm{A}\norm{A^{-1}}$ 
+	where 
+	$\norm{A} = \sigma_{\max}(A)$ 
+	and 
+	$\norm{A^{-1} } = \displaystyle\frac{1}{\min_{\norm{x}}\norm{A}} = \frac{1}{\sigma_{\min}(A)}$. 
+		Therefore
+	\[
+		\mathcal{K}(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}
+	\]
+	
+	\vfill
+	
+	Therefore a large $\mathcal{K}(A)$ implies there is significant difference between the largest and smallest singular values.	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Numerically Sensitive Problems}
+	For example $\sigma_{\min}(A)$ may be very small, therefore given 
+	\[ 
+		x = \sum_{j=1}^n \frac{\vbf_j\ubf_j^H}{\sigma_j}b 
+	\]
+	x is very sensitive to small change in $b$ due to the terms in the sum that have very small singular values.	
+	
+	\vfill
+	
+	{\color{blue}Solution:}  
+	Zero out small singular values to get the approximate solution
+	\[ 
+		Ax = \begin{pmatrix}
+	  			U_1 & U_2  
+			 \end{pmatrix}
+			 \begin{pmatrix}
+	    		\Sigma_1 & 0\\
+	    		0 & \Sigma_2
+	  		 \end{pmatrix}
+	  		 \begin{pmatrix}
+	    		V_1^H\\
+	    		V_2^H
+	  		 \end{pmatrix} x 
+	  	\approx \begin{pmatrix}
+	    			U_1 & U_2
+	  			\end{pmatrix}
+	  			\begin{pmatrix}
+	    			\Sigma_1 & 0\\
+	    			0 & 0
+	  			\end{pmatrix}
+	  			\begin{pmatrix}
+	    			V_1^H\\
+	    			V_2^H
+	  			\end{pmatrix} x
+	\]
+	so
+	\[ 
+		x = V_1\Sigma_1^{-1}U_1^Hb 
+	\]
+	is an approximate solution that is numerically stable.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Numerically Sensitive Problems}
+	\begin{itemize}
+		\item Moon Example 7.4.1 shows that if $\sigma_j$-small then the vector $\ubf_j \in \mathbb{R}^m$ defines a sensitive direction for $b$.  i.e. if $b$ is almost parallel with $\ubf_j$ then $x = \frac{\vbf_j\ubf_j^H}{\sigma_j}b$ is clearly sensitive to small changes in $b$.  If $b$ is perpendicular to $\ubf_j$ then $\ubf_j^Hb=0$ and we are ok.
+		\item If $A$ comes from noisy data (almost always) then $A$ will usually be full rank, even if the original data that produced $A$ would have resulted in a lower rank $A$ if it wasn't corrupted by noise.
+		\item But the nonzero singular values added by noise will usually be small.
+		\item Therefore, an effective way to reduce the rank of $A$ to get rid of the effect of noise is to zero the ``small'' singular values.
+	\end{itemize}
+\end{frame}
+
+
+
+
+\end{document}

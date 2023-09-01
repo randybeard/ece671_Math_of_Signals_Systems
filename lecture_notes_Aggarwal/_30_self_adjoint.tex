@@ -1,0 +1,103 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Self Adjoint Matrices}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Self Adjoint Matrices}
+	\begin{definition}
+	A matrix $A\in\mathbb{C}^{n\times n}$ is said to be \underline{self adjoint} (also called \underline{Hermitian}) if 
+	\[
+		A = A^H.
+	\]	
+	\end{definition}
+	
+	\begin{lemma}[Moon 6.2]
+ 		If $A = A^H$ then the eigenvalues of $A$ are real.
+	\end{lemma}
+	\begin{proof}
+		Let $(\lambda,x)$ be a right eigen-pair, then
+		\[ 
+			Ax = \lambda x, \text{ and } x^HA^H = \bar{\lambda}x^H.
+		\]
+		Therefore 
+		\begin{align*}
+			& x^HAx = \lambda x^Hx, \text{ and } x^HA^Hx = \bar{\lambda}x^Hx \\
+			\implies & \lambda x^Hx = \bar{\lambda}x^Hx  
+			\implies  \bar{\lambda} = \lambda, \\
+			\implies & \lambda \text{ is real. }	
+		\end{align*}
+	\end{proof}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Self Adjoint Matrices}
+	\begin{lemma}[Moon 6.3]
+		If $A=A^H$ and the eigenvalues are distinct, then the eigenvectors are orthogonal.
+	\end{lemma}
+	
+	\begin{proof}
+	Let $(\lambda_1,x_1)$ and $(\lambda_2,x_2)$ be distinct eigenpairs, i.e. $\lambda_1 \neq \lambda_2$, then
+	\begin{align*}
+		& x_2^HAx_1 = \lambda_1x_2^Hx_1 \\
+		\text{and~} & x_2^HA^Hx_1 = \lambda_2x_2^Hx_1 \
+	\end{align*}
+	Therefore $(\lambda_1-\lambda_2)x_2^Hx_1 = 0$.
+	Because $\lambda_1 \neq \lambda_2$ we must have that
+	\[
+		x_2^Hx_1 = 0
+	\]
+	which implies that $x_1$ and $x_2$ are orthogonal.
+	\end{proof}
+	{\color{blue}
+		Note the eigenvectors can always be chosen to be orthonormal.
+	}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Self Adjoint Matrices}
+
+	\begin{theorem}[Moon Theorem 6.2 (Special Theorem)]
+		If $A\in\mathbb{C}^{n\times n}$ is Hermitian,
+		then $q_i = m_i$ for each eigenvalue $\lambda_i$.
+	\end{theorem}
+	
+	\begin{corollary}
+		If $A=A^H$, then $\exists$ a unitary $U$ and real diagonal $\Lambda$ such that
+		\[
+			A = U \Lambda U^H.
+		\]
+	\end{corollary}
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Eigenvalues and Rank}
+	
+	\begin{lemma}[Moon Lemma 6.5]
+		Let $A \in \mathbb{C}^{m\times m}$ be of rank $r < m$.  Then at least $m- r$ of the eigenvalues of $A$ are equal to zero	
+	\end{lemma}
+\end{frame}
+
+
+
+
+
+\end{document}

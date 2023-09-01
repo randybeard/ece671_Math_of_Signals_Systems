@@ -1,0 +1,118 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Linear Operators}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Operators and Transformations}
+\begin{definition}[Linear Operator]	
+	Let $\mathcal{L}:\mathbb{X}\to\mathbb{Y}$ be an operator from $\mathbb{X}$ to
+$\mathbb{Y}$.  $\mathcal{L}$ is a \underline{linear operator} if
+\begin{enumerate}
+  \item $\mathcal{L}[\alpha x] = \alpha \mathcal{L}[x] \qquad \forall x \in \mathbb{X} \qquad \forall \alpha \in \mathbb{F}$
+  \item $\mathcal{L}[x_1 + x_2] = \mathcal{L}[x_1] + \mathcal{L}[x_2], \qquad \forall x_1, x_2\in\mathbb{X}$
+\end{enumerate}
+\end{definition}
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Linear Operators}
+\begin{example}[Matrices]	
+Operators from $\mathbb{C}^n$ to $\mathbb{C}^m$ are $m \times n$ matrices.
+\[ A(\alpha x + \beta y) = \alpha Ax + \beta Ay \] 
+A is a linear operator.
+\end{example}
+
+\begin{example}[Differential Equations with no input]
+The differential equation $\dot{x} = Ax; \quad x(0) = x_0$
+defines a linear operator from $\mathbb{R}^n$ to $L_2[0,T]$
+\[
+y(t) = \mathcal{L}[x_0] \text{ where } \mathcal{L}[x_0] = e^{At}x_0 
+\]
+\indent $\mathcal{L}$ is linear since 
+\[ 
+e^{At}(\alpha x_{01} + \beta  x_{01}) = \alpha e^{At}x_{01} + \beta e^{At}x_{02} 
+\]
+\end{example}
+
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Linear Operators}
+\begin{example}[Convolution]
+Convolution is a linear operator from $L_{\infty}$ to
+$L_{\infty}$ if $h(t) \in L_1[-\infty,\infty]$, i.e.
+\[ y(t) = \mathcal{L}[x(t)] = \int_{-\infty}^{\infty} h(\tau)x(t - \tau)
+d\tau \] 
+\indent (Recall: for a system to be BIBO stable required
+that $\int_{-\infty}^{\infty}|h(\tau)|d\tau <\infty$
+\indent i.e. $h(t) \in L_1[-\infty,\infty]$)
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Examples of Linear Operators}
+\begin{example}[Fourier Transform]
+\noindent (E4) The Fourier transform defines a linear operator from $L_2[-\infty,\infty]$ to $L_2[-\infty,\infty]$.\\
+\[ X(j\omega) = \mathcal{L}[x(t)] \defeq \int_{-\infty}^{\infty} x(t)e^{-j\omega t}dt \]	
+\end{example}
+
+\vspace{1cm}
+{\em There are many examples of linear operators!}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Range and Null Space of an Operator}
+\begin{definition}[Range Space]
+	Let $\mathcal{L}: \mathbb{X} \to \mathbb{Y}$ be a
+linear operator.  The \underline{range space} (or \underline{image}) of $\mathcal{L}$ is 
+\[
+\mathcal{R}(\mathcal{L}) = \{ y \in \mathbb{Y} : y = \mathcal{L}[x] \text{ and } x \in \mathbb{X}\} \subseteq \mathbb{Y}
+\]
+\end{definition}
+\begin{definition}[Null Space]
+The \underline{Null space} or \underline{kernel} of $\mathcal{L}$ is
+\[
+\mathcal{N}(\mathcal{L}) = \{ x \in \mathbb{X} : \mathcal{L}[x] = 0 \} \subseteq \mathbb{X} 
+\]	
+\end{definition}
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Example of Range and Null Space}
+\begin{itemize}
+\item Consider the matrix $A=\begin{pmatrix} 1 & 0 & 0\\ 0 & 0 & 0 \end{pmatrix}$ which defines a linear operator from $\mathbb{R}^3$ to $\mathbb{R}^2$.
+\item Note that $y=Ax = 	\begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}\begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} x_1 \\ 0 \end{pmatrix}$.
+\item Therefore, the range space is
+	\[
+	\mathcal{R}(A) = \left\{\begin{pmatrix}\alpha \\ 0 \end{pmatrix} : \alpha\in\mathbb{R} \right\} \subset \mathbb{R}^2.
+	\]
+\item Similarly, the null space is
+	\[
+	\mathcal{N}(A) = \left\{\begin{pmatrix}0 \\ \alpha \\ \beta \end{pmatrix} : \alpha, \beta\in\mathbb{R} \right\}\subset \mathbb{R}^3.
+	\]
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}

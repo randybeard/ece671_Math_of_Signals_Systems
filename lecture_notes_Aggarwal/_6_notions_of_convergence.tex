@@ -1,0 +1,141 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Notions of Convergence}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Notions of Convergence}
+
+\begin{definition}[Strong Convergence/ Convergence in norm]
+$x_n$ converges strongly to $x$, i.e. $x_n \overset{s}{\to} x$ iff
+\[
+\norm{ x_n-x}  \to 0 \quad \mathit{ as } \quad n \to \infty 
+\]	
+\end{definition}
+
+\begin{definition}[Weak Convergence / Convergence in inner product]
+$x_n$ converges weakly to $x$, i.e. $x_n \overset{w}{\to} x$ iff
+\[ 
+\iprod{ x_n, y } \to \iprod{ x,y }, \forall y \in S, 
+\]	
+\end{definition}
+
+Note that this must hold for all $y \in S$, therefore Example 2.4.4 in the book is bogus!
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Notions of Convergence (cont.)}
+\begin{theorem}[Strong vs. Weak Convergence]
+  Let $(x_n)$ be a sequence in a normed space $\mathbb{X}$.  Then
+\begin{description}
+  \item[A.] Strong convergence $\Rightarrow$ weak convergence with the same limit
+  \item[B.] The converse of (A.) is not generally true
+  \item[C.] If dim $\mathbb{X} < \infty$, then weak convergence $\Rightarrow$ strong convergence.
+\end{description}
+\end{theorem}
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof:}
+\noindent (A) By definition of strong convergence,
+\[ 
+x_n \overset{s}{\to} x^* \quad \Rightarrow \quad \norm{ x_n-x^*}  \to 0
+\]
+so let $y$ be \underline{any} element in $\mathbb{X}$ then
+\[ 
+|\iprod{ x_n,y } - \iprod{ x^*,y } | = |\iprod{ x_n - x^*,y } | \leq \norm{ x_n-x^*}  \norm{ y}  
+\]
+but the RHS $\to 0$ which implies that the LHS $\to 0$ which implies weak convergence.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof:}
+\noindent (B) Before proving part (B) lets first understand what is wrong with Example 2.4.4 in the book.
+\begin{align*}
+x_n &= (0,0,0,\ldots,1,0,\ldots) \\
+y &= (1, 1/2, 1/4, 1/8, \ldots)
+\end{align*}
+Then $\iprod{ x_n, y } \to 0$ but this does not imply weak convergence since it must hold for all $y \in \mathbb{X}$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof:}
+To prove part (B) we need a counter example.  Again let $x_n = (0,0,\ldots,0,1,0,\ldots)$ and let $\mathbb{X} = \ellbf_2$ i.e. 
+\begin{align*}
+y \in \mathbb{X} &\Rightarrow \left( \displaystyle \sum_{i=1}^{\infty}|y_i|^2\right)^{\frac{1}{2}} < \infty \\
+	&\Rightarrow y_i \to 0 \quad \mathit{as} \quad i \to \infty 
+\end{align*}
+so 
+\[ 
+\iprod{ x_n,y } = y_n \to 0 \quad \mathit{as} \quad n \to \infty \qquad \forall y \in \mathbb{X}
+\]
+\[ 
+\Rightarrow \{x_n\} \overset{w}{\to} 0 
+\]
+but there is no $x^*$ such that $\norm{ x_n - x^*} \to 0$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof:}
+\noindent (C) Suppose that $x_n \overset{w}{\to} x$ and $dim(\mathbb{X})=k$ then 
+\[
+\forall y \in \mathbb{X} \qquad \iprod{ x_n,y } \to \iprod{ x,y }.
+\]
+Let $\{e_1,\ldots,e_k\}$ be an orthonormal basis for $\mathbb{X}$, i.e. $ \iprod{ e_i, e_j } = \delta_{ij}$, then 
+\begin{align*}
+x_n &= a_1^{(n)}e_1 + \cdots + a_k^{(n)}e_k\\
+x &= a_1e_1 + \cdots + a_ke_k.
+\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof:}
+
+Then since $\iprod{ x_n,y } \to \iprod{ x,y }$ $\forall y$, let $y = e_j$
+\[ \Rightarrow \iprod{ a_1^{(n)}e_1+\cdots+a_k^ne_k,e_j } = a_j^{(n)} \]
+and \[ \iprod{ a_1e_1 + \cdots + a_ke_k,e_j } = a_j \]
+so \[ \iprod{ x_n,e_j } \to \iprod{ x,e_j } \Rightarrow a_j^{(n)} \to a_j \qquad \forall y = 1,\ldots,k\]
+Also,
+\begin{flalign*}
+\norm{ x_n - x}  &= \norm{  \sum_{j=1}^{k} a_j^{(n)}e_j - \sum_{j=1}^{k}a_je_j }  = \norm{  \sum_{j=1}^{k}(a_j^{(n)}-a_j)e_j } \\
+            &\leq \sum_{j=1}^{k} | a_j^{(n)}-a_j| \norm{ e_j}  \to 0 \\
+            & \Rightarrow \text{ strong convergence}
+\end{flalign*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Equivalence of Norms}
+
+\begin{theorem}
+ Let $\text{dim}(\mathbb{X})=k$ and let $\norm{\cdot} $ and $\norm{\cdot}_0$ be two different norms on $\mathbb{X}$ then $\exists a,b$ such that 
+\[ 
+a\norm{x}_0  \leq \norm{x} \leq b\norm{x}_0 
+\]
+\end{theorem}
+\begin{proof}
+ (in book page 96)
+\end{proof}
+ 
+{\bf Implication:}  For convergence proofs, it doesn't matter which norm you use, therefore, use the one that simplifies the proof.
+\end{frame}
+
+
+\end{document}

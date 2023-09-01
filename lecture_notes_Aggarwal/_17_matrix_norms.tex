@@ -1,0 +1,178 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Matrix Norms}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Matrix Norms}
+	For matrices $A: \mathbb{C}^m \to \mathbb{C}^n$ we have the following induced norm:  
+	\[ 
+	\norm{ A }_{\infty} = \max_{\norm{ x }_{\infty} = 1} \norm{ Ax }_{\infty} 
+	\]
+	(Why $\max$ not $\sup$?)
+	
+	\vfill
+	
+	\begin{lemma}
+	\[ 
+	\norm{ A }_{\infty} = \max_{i=1:m} \sum_{j=1:n} \abs{a_{ij}}
+	\]
+	i.e., the largest row sum.
+	\end{lemma}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof}
+	First show that $\norm{ A }_{\infty} \leq \max_{i=1:m}\sum_{i=1:n} \abs{a_{ij}}$:
+	\begin{align*} 
+	\norm{ A }_{\infty} &= \max_{\norm{ x }_{\infty}=1}
+	\norm{ 
+  		\left(
+    		\begin{array}{ccc} 
+      		a_{11} & \cdots & a_{1n} \\
+      		\vdots & & \vdots \\
+      		a_{m1} & \cdots & a_{mn}
+    		\end{array}
+  		\right)
+  		\left(
+    		\begin{array}{c}
+      		x_1 \\
+      		\vdots \\
+      		x_n
+    		\end{array}
+  		\right)
+	}_{\infty}\\
+	&= \max_{\norm{ x }_{\infty}=1} 
+		\left[ 
+  			\max \left(
+    			\begin{array}{c}
+      				\abs{\sum_{j=1}^{n} a_{1j} x_j }\\
+      				\vdots\\
+      				\abs{\sum_{j=1}^{n} a_{mj} x_j }
+    			\end{array}
+  			\right)
+		\right] \\
+	&\leq \max_{x \text{ s.t. } \max \abs{x_i}=1} 
+		\left[
+  			\max \left(
+    			\begin{array}{ccc}
+      			\sum_{j=1}^{n}\abs{a_{1j}}\abs{x_j}, &
+      			\cdots, &
+      			\sum_{j=1}^{n}\abs{a_{mj}}\abs{x_j}
+    			\end{array}
+  			\right)
+		\right]\\
+	&\leq \max_{\norm{ x }_{\infty}=1} 
+		\left[ 
+			\max \left(
+				\begin{array}{ccc}
+				\norm{ x }_{\infty}\sum_{j=1}^{n}\abs{a_{1j}}, &
+				\cdots, &
+				\norm{ x }_{\infty}\sum_{j=1}^{m}\abs{a_{mj}}
+				\end{array}
+			\right)
+		\right] \\
+	&= \max_{i=1:m}\sum_{j=1}^{m}\abs{a_{ij}}
+	\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof, cont.}
+	Now we need to show that 
+	$\max_{i=1:m} \sum_{j=1:n} \abs{a_{ij}} \leq \norm{A}_{\infty}$:
+	
+	\vfill 
+	
+	Let $k = \underset{i=1:m}{\arg\max} \sum_{j=1:n} |a_{ij}|$ \\
+	and let $\hat{x}$ be such that 
+	\[ 
+	\hat{x}_j = \begin{cases}
+					1 \qquad \text{ if } &a_{kj} \geq 0\\
+					-1 \qquad &\text{ otherwise }
+				\end{cases}
+	\]
+	then $\norm{\hat{x} }_{\infty} = 1$ and then
+	\[
+	\norm{A\hat{x} }_{\infty} = \max_{i=1:m} \sum_{j=1:n} |a_{ij}| \leq \max_{\norm{x }_{\infty} = 1} \norm{Ax }_{\infty} = \norm{A}_{\infty}.
+	\]
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Other Matrix Norms}
+	\begin{lemma}
+		\begin{align*}
+			\norm{A}_1 &= \max_{\norm{x}_1 = 1} \norm{Ax}_1 \\
+				 	   &= \max_{j=1:n} \sum_{i=1}^m \abs{a_{ij}} \text{ (largest column sum) }
+		\end{align*}
+	\end{lemma}
+	
+	\vfill
+	
+	\begin{lemma}
+		\[ 
+		\norm{A}_2 = \max_i \sqrt{\lambda_i(A^HA)} = \text{ largest singular value of $A$ }
+		 \]
+	\end{lemma}
+	More discussion of this in Chapter 7.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Norm of $A^{-1}$}
+	\begin{theorem}
+	For induced matrix norms, where $A^{-1}$ exists we have 
+	\[ 
+	\norm{A^{-1} } = \frac{1}{\displaystyle\min_{x \neq 0}\frac{\norm{Ax }}{\norm{x }}} = \frac{1}{\displaystyle\min_{\norm{x }=1}\norm{Ax }}
+	\]
+	\end{theorem}
+	
+	\begin{proof}
+		Let $Ax = b \Rightarrow x = A^{-1}b $ then
+		\begin{align*}
+		\norm{A^{-1} } &= \max_{b \neq 0} \frac{\norm{A^{-1}b }}{\norm{b }} = \max_{x \neq 0}\frac{\norm{x }}{\norm{Ax }} = \max_{x \neq 0}\frac{1}{\frac{\norm{Ax }}{\norm{x }}}\\
+		&= \frac{1}{\displaystyle\min_{x \neq 0} \frac{\norm{Ax }}{\norm{x }}} = \frac{1}{\displaystyle\min_{\norm{x}=1} \norm{Ax }}
+		\end{align*}	
+	\end{proof}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Frobenius Norm}
+	\begin{definition} The \underline{Frobenius norm} of a matrix is given by
+		\begin{align*}
+			\norm{A }_F &= \left( \sum_{i=1}^{m} \sum_{j=1}^{m} \abs{a_{ij}}^2 \right)^{\frac{1}{2}} \\
+				&= \sqrt{ tr(A^HA) }
+		\end{align*}
+	\end{definition}
+	
+	{\bf\color{darkolivegreen} Fact:}  The Frobenius norm is NOT an induced norm.  
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Matrix Convergence}
+	For matrices: convergence in any norm implies convergence in any other norm.  In particular
+	\begin{align*}
+		\norm{A }_2 &\leq \norm{A }_F \leq \sqrt{n}\norm{A }_2\\
+		\max|a_{ij}| &\leq \norm{A }_2 \leq \sqrt{mn}\max|a_{ij}|\\
+		\frac{1}{\sqrt{n}}\norm{A }_{\infty} &\leq \norm{A }_2 \leq \sqrt{m}\norm{A}_{\infty}\\
+		\frac{1}{\sqrt{m}}\norm{A }_1 &\leq \norm{A }_2 \leq \sqrt{n}\norm{A }_1
+	\end{align*}	
+\end{frame}
+
+
+
+
+\end{document}

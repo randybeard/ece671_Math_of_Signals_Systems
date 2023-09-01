@@ -1,0 +1,72 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Levenberg-Marquardt Optimization}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Nonlinear Least Squares}
+	The downside of GN is that the matrix $J^\top(x) J(x)$ may be ill-conditions at some states $x$.
+	
+	For the general nonlinear least squares problem, we have
+	\[
+	\frac{\partial \frac{1}{2}\rbf^\top(x) \rbf(x)}{\partial x} = \frac{\partial \rbf^\top}{\partial x}(x) \rbf(x) = \Jbf^\top(x)\rbf(x).
+	\]
+	Therefore we have
+	\begin{align*}
+		\text{Gradient Descent} &\quad 	x^{[k+1]} = x^{[k]} - \alpha \Jbf^\top(x^{[k]}) \rbf(x^{[k]}) \\
+		\text{Gauss-Newton} &\quad 	x^{[k+1]} = x^{[k]} - \left(\Jbf^\top(x^{[k]}) \Jbf(x^{[k]})\right)^{-1} \Jbf^\top(x^{[k]}) \rbf(x^{[k]}).		
+	\end{align*}
+	
+	Note that there is no inverse for Gradient Descent, but it may converge slowly, even for linear residuals.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Nonlinear Least Squares}
+	The \underline{Levenberg-Marquardt} (LM) iteration is a combination of gradient descent and Gauss-Newton:
+	\[
+		x^{[k+1]} = x^{[k]} - \left(\lambda I + \Jbf^\top(x^{[k]}) \Jbf(x^{[k]})\right)^{-1} \Jbf^\top(x^{[k]}) \rbf(x^{[k]}),
+	\]	
+	where $\lambda = 1/\alpha$.  
+	
+	Note that $\lambda I + \Jbf^\top \Jbf$ is guaranteed to be full rank and well conditioned for large $\lambda$.
+	
+	Standard practice:
+	\begin{itemize}
+		\item For the first iteration make $\lambda$ large (e.g., $\approx 10^4$)
+		\item If squared error decreases, decrease $\lambda$ for next iteration (e.g., by half).
+		\item If squared error increases, increase $\lambda$ for next iteration (e.g., by 2x).
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Weighted Nonlinear Least Squares}
+	If $W=W^\top >0$ is a weighting matrix, then 
+	\begin{mini*}|s|
+		{x\in\mathbb{R}^n}{\frac{1}{2}\rbf^\top(x) W \rbf(x)}{}{}.
+	\end{mini*}
+	results in
+	\begin{align*}
+		\text{(GD)} &\quad 	x^{[k+1]} = x^{[k]} - \lambda^{-1} \Jbf^\top W \rbf\big|_{x^{[k]}} \\
+		\text{(GN)} &\quad 	x^{[k+1]} = x^{[k]} - \left(\Jbf^\top W \Jbf\right)^{-1} \Jbf^\top W \rbf\big|_{x^{[k]}} \\
+		\text{(LM)} &\quad 	x^{[k+1]} = x^{[k]} - \left(\lambda I + \Jbf^\top W \Jbf\right)^{-1} \Jbf^\top W \rbf\big|_{x^{[k]}}.		
+	\end{align*}
+\end{frame}
+
+
+
+
+\end{document}

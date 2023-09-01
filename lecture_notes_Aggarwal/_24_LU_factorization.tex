@@ -1,0 +1,452 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{LU Factorization}
+\frame{\sectionpage}
+
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization}
+	\begin{itemize}
+		\item 	Suppose that $A \in \mathbb{C}^{n\times n}$ is full rank.  What is a numerically efficient method for computing the solution to $Ax = b$, i.e. $x = A^{-1}b$?
+		\item An explicit formula is:
+			\[ x = \frac{adj(A)b}{det(A)} \]
+			but this requires numerical computation of determinants.
+		\item LU factorization is more efficient.
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: Basic Idea}
+	\begin{itemize}
+		\item Find a permutation matrix $P$, a lower diagonal matrix with ones on the diagonal $L$, and an upper diagonal matrix $U$ such that
+			\[ PA = LU.\]
+		\item How?  Will illustrate by example:
+	\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Let 
+	\[ 
+	A = \begin{pmatrix} 
+    		1 & -2 & 3\\
+    		-4 & 5 & -6\\
+    		7 & -8 & 9
+    	\end{pmatrix}
+    \]
+	The idea is to perform row reductions to get a triangular matrix.  
+	\par\noindent{\bf Key Idea:}  Reduce the row with the largest element.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	First, permute $A$ to get the third row on top:
+	\begin{align*}
+		P_{13}A &= \underbrace{\begin{pmatrix}
+						0 & 0 & 1\\
+						0 & 1 & 0\\
+						1 & 0 & 0
+					\end{pmatrix}}_{P_{13}}
+					\begin{pmatrix}
+    					1 & -2 & 3\\
+    					-4 & 5 & -6\\
+    					7 & -8 & 9
+    				\end{pmatrix} \\
+    			&= \begin{pmatrix}
+    					7 & -8 & 9\\
+    					-4 & 5 & -6\\
+    					1 & -2 & 3
+    				\end{pmatrix}
+    \end{align*}
+	The idea is that you always want to divide by the largest element (in absolute value) in the row to avoid numerical problems.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Now zero out the $-4$ and $1$ by multiplying the first row by $+\frac{4}{7}$ and adding to the second row and multiplying the first row by 
+	$-\frac{1}{7}$ and adding to the third row:
+	\begin{align*}
+		E_1 P_{13}A 
+		&= 
+			\underbrace{\begin{pmatrix}
+    			1 & 0 & 0\\
+    			\frac{4}{7} & 1 & 0\\
+    			\frac{-1}{7} & 0 & 1
+  			\end{pmatrix}}_{E_1}
+			\begin{pmatrix}
+    			7 & -8 & 9\\
+    			-4 & 5 & -6\\
+    			1 & -2 & 3
+  			\end{pmatrix} \\
+		&=
+			\begin{pmatrix}
+    			7 & -8 & 9\\
+    			0 & 0.4286 & -5.4286\\
+    			0 & -0.8571 & 2.8571
+  			\end{pmatrix}
+	\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Now permute (or ``pivot'') to get the largest (in absolute value) number in the second column in the second row:
+	\begin{align*}
+		P_{23}E_1P_{13}A &= 
+			\underbrace{\begin{pmatrix}
+    			1 & 0 & 0\\
+    			0 & 0 & 1\\
+    			0 & 1 & 0
+  			\end{pmatrix}}_{P_{23}}
+			\begin{pmatrix}
+    			7 & -8 & 9\\
+    			0 & 0.4286 & -5.4286\\
+    			0 & -0.8571 & 2.8571
+  			\end{pmatrix} \\
+		&=
+			\begin{pmatrix}
+    			7 & -8 & 9\\
+    			0 & -0.8571 & 2.8571\\
+    			0 & 0.4286 & -5.4286
+  			\end{pmatrix}
+	\end{align*}
+\end{frame}
+
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Zero out the $0.4286$ by multiplying the second row by 
+	$\frac{0.4286}{0.8571}$ and adding to the third row:
+	\begin{align*}
+		E_2 P_{23} E_1 P_{13} A 
+		&= 
+			\underbrace{
+				\begin{pmatrix}
+    				1 & 0 & 0 \\
+    				0 & 1 & 0 \\
+    				0 & \frac{0.4286}{0.8571} & 1
+  				\end{pmatrix}
+  			}_{E_2}
+			\begin{pmatrix}
+    			7 & -8 & 9\\
+    			0 & -0.8571 & 2.8571\\
+    			0 & 0.4286 & -5.4286
+  			\end{pmatrix} \\
+		&=
+			\begin{pmatrix}
+   				7 & -8 & 9\\
+    			0 & -0.8571 & 2.8571\\
+    			0 & 0 & -4
+  			\end{pmatrix} \\ 
+  		&= U 
+	\end{align*}
+	Therefore
+	\begin{align*}
+		A &= (E_2P_{23}E_1P_{13})^{-1}U \\
+		  &= P_{13}^{-1}E_1^{-1}P_{23}^{-1}E_2^{-1} U 
+	\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Note that if 
+ 	\(
+	E_1 = \begin{pmatrix}
+    	1 & 0 & 0\\
+    	\frac{4}{7} & 1 & 0\\
+    	-\frac{1}{7} & 0 & 1
+  		\end{pmatrix},
+  	\)
+  	then
+	\(
+	E_1^{-1} = \begin{pmatrix}
+    	1 & 0 & 0\\
+    	-\frac{4}{7} & 1 & 0\\
+    	\frac{1}{7} & 0 & 1
+    	\end{pmatrix}
+	\) \\
+	since 
+	\[ 
+	\begin{pmatrix}
+    	1 & 0 & 0\\
+    	\frac{4}{7} & 1 & 0\\
+    	-\frac{1}{7} & 0 & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+    	1 & 0 & 0\\
+    	-\frac{4}{7} & 1 & 0\\
+    	\frac{1}{7} & 0 & 1
+    \end{pmatrix}
+    =\begin{pmatrix}
+    	1 & 0 & 0\\
+    	0 & 1 & 0\\
+    	0 & 0 & 1
+    \end{pmatrix}
+	\]
+	
+	\vfill
+	
+	So the inverse of any lower diagonal matrix formed by multiplying and adding rows is found by negating the off-diagonal terms.
+	
+	\vfill
+
+	Therefore $E_1^{-1}$ and $E_2^{-1}$ are easy to compute.
+\end{frame}
+	
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Also note that for permutation matrices 
+	\[
+	P_{ij}^{-1} = P_{ji}
+	\]
+	since 
+	\[
+	\underbrace{P_{ij}}_{\text{switch $ij$ rows}}
+	\underbrace{P_{ij}^{-1}}_{\text{ switch back}} = I.
+	\]
+
+	For example
+	\[
+	\begin{pmatrix}
+    	0 & 0 & 1\\
+    	0 & 1 & 0\\
+    	1 & 0 & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+    	0 & 0 & 1\\
+    	0 & 1 & 0\\
+    	1 & 0 & 0
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+    	1 & 0 & 0\\
+    	0 & 1 & 0\\
+    	0 & 0 & 1
+	\end{pmatrix}.
+	\]
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	So we have $A = VU$
+	where 
+	\(
+	V = P_{13}E_1^{-1}P_{23}E_2^{-1} = 
+	\begin{pmatrix}
+    	0.1429 & 1 & 0\\
+    	-0.5714 & -0.5 & 1\\
+    	1 & 0 & 0
+  	\end{pmatrix}
+	\)
+	
+	\vfill
+		
+	Note that $V$ is not lower triangular but
+	\begin{align*}
+	L &= P_{23}P_{13}V = P_{23}
+		\begin{pmatrix}
+    		1 & 0 & 0\\
+    		-0.5714 & -0.5 & 1\\
+    		0.1429 & 1 & 0
+  		\end{pmatrix} \\
+		&= 
+		\begin{pmatrix}
+    		1 & 0 & 0\\
+    		0.1429 & 1 & 0\\
+    		-0.5714 & -0.5 & 1
+  		\end{pmatrix}
+	\end{align*}
+	is, so
+	\(
+	P_{23}P_{13}A = P_{23}P_{13}VU.
+	\)
+	Therefore
+	\[ 
+	PA = LU 
+	\]
+	where $P = P_{23}P_{13}$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	For our example we have
+	{\footnotesize
+	\[
+		\underbrace{
+			\begin{pmatrix}
+    			0 & 0 & 1\\
+    			1 & 0 & 0\\
+    			0 & 1 & 0
+  			\end{pmatrix}
+  		}_{P}
+		\underbrace{
+			\begin{pmatrix}
+    			1 & -2 & 3\\
+    			-4 & 5 & -6\\
+    			7 & -8 & 9
+			\end{pmatrix}
+		}_{A}
+		= 
+		\underbrace{
+			\begin{pmatrix}
+    			1 & 0 & 0\\
+    			0.1429 & 1 & 0\\
+    			-0.5714 & -0.5 & 1
+			\end{pmatrix}
+		}_{L}
+		\underbrace{
+			\begin{pmatrix}
+				7 & -8 & 9\\
+    			0 & -0.8571 & 2.8571\\
+    			0 & 0 & -4	
+			\end{pmatrix}
+		}_{U}
+	\]
+	}
+	
+	How do we solve the equation $ Ax = b$?
+
+	Suppose 
+	\(
+		b = \begin{pmatrix} 
+				1 \\ 2 \\ 3 
+			\end{pmatrix}
+	\)
+
+	Note that 
+	\[ 
+		PAx = Pb 
+		    = \begin{pmatrix} 
+		    	3 \\ 1 \\ 2 
+		      \end{pmatrix}
+	\]
+
+	So that
+	\[ 
+		LUx = Pb. 
+	\]
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Let $y = Ux$ then 
+	\begin{align*}
+		&  	Ly = Pb \\
+		\implies \quad & 
+			\begin{pmatrix}
+    			1 & 0 & 0\\
+    			0.1429 & 1 & 0\\
+    			-0.5714 & -0.5 & 1
+    		\end{pmatrix}
+			\begin{pmatrix} 
+				y_1 \\ y_2 \\ y_3 
+			\end{pmatrix}
+			= 
+			\begin{pmatrix} 
+				3 \\ 1 \\ 2 
+			\end{pmatrix} \\
+		\implies \quad & 
+			\left\{
+				\begin{array}{llr}
+					y_1 &= 3\\
+					y_2 &= 1 - 0.1429y_1 
+						& \quad \text{(easy to solve)}\\
+					y_3 &= 2 + 0.5714y_1 + 0.5y_2
+				\end{array} 
+			\right. \\
+		\implies \quad & 
+			\left\{
+				\begin{array}{llr}
+					y_1 &= 3\\
+					y_2 &= 0.5741 
+						& \quad \text{(easy to solve)} \\
+					y_3 &= 4
+				\end{array}
+			\right.
+	\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{LU Factorization: cont.}
+	Next solve $Ux = y$ for $x$:
+	\begin{align*}
+		& Ux = y \\
+		\implies \quad & 	
+		\begin{pmatrix}
+    		7 & -8 & 9\\
+    		0 & -0.8571 & 2.8571\\
+    		0 & 0 & -4
+    	\end{pmatrix}
+    	\begin{pmatrix}
+    		x_1 \\ x_2 \\ x_3	
+    	\end{pmatrix}
+		= 
+		\begin{pmatrix}
+			3 \\ 0.5714 \\ 4
+		\end{pmatrix} \\
+		\implies \quad & 
+		\left\{
+			\begin{array}{rlr}
+				-4x_3 &= 4\\
+				-0.8571x_2 &= 0.5714 - 2.8571x_2 
+					& \quad \text{(easy to solve)}\\
+				7x_1 &= 3 + 8x_2 - x_3		
+			\end{array} 
+		\right. \\
+		\implies \quad & 
+		\left\{
+			\begin{array}{ll}
+				x_1 &= -4\\
+				x_2 &= -4\\
+				x_3 &= -1		
+			\end{array}
+		\right.
+	\end{align*}	
+\end{frame}
+
+%----------------------------------
+\begin{frame}[fragile]\frametitle{LU Factorization: cont.}
+{\small
+In Matlab:
+	
+\begin{lstlisting}[language=Matlab]
+    A = [1, 2, 3; 4, 5, 6; 7, 8, 0];
+    [L, U, P] = lu(A)	
+\end{lstlisting}
+
+\vfill
+	
+In Python:
+
+\begin{lstlisting}[language=Python]
+    import numpy as np
+    import scipy.linalg as linalg
+		
+    A = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    P, L, U = linalg.lu(A)
+\end{lstlisting}	
+}
+
+\vfill
+
+{\bf Homework problem:}  Write your own custom \texttt{lu} function and compare to the built in \texttt{lu} function on 100 randomly generated matrices.
+\end{frame}
+
+
+
+
+\end{document}

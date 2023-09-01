@@ -1,0 +1,210 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Vector Spaces}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces}
+
+
+\subsection*{Definition: Field} A \underline{field} is a set of scalars with well defined addition and multiplication operations.
+
+{\bf Example of fields:}  
+\begin{itemize}
+\item $\mathbb{R}$ with normal addition and multiplication operations
+\item $\mathbb{C}$ with complex addition and complex multiplication
+\item The set of quaternions, with addition and quaternion multiplication
+\item Binary numbers $\{0, 1\}$ where addition is the ``or'' operator and multiplication is the ``and'' operator.
+\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces}
+
+\begin{definition}[Linear Vector Space] A \underline{linear vector space} is a pair $(\mathbb{X},\mathbb{F})$, where  $\mathbb{X}$ is a set of objects, and $\mathbb{F}$ is a field, this is closed under addition and scalar multiplication. i.e., \\
+\begin{itemize}
+\item $x\in\mathbb{X}, \alpha \in \mathbb{F} \Rightarrow \alpha x \in \mathbb{X}$
+\item $x,y \in \mathbb{X} \Rightarrow x+y\in\mathbb{X}$.
+\end{itemize}
+\end{definition}
+By implication
+\begin{itemize}
+\item $x\in\mathbb{X}, \alpha,\beta\in\mathbb{F} \Rightarrow (\alpha + \beta)x = \alpha x + \beta x \in \mathbb{X}$
+\item $x,y\in\mathbb{X}, \alpha\in\mathbb{F} \Rightarrow \alpha(x + y) = \alpha x + \alpha y \in\mathbb{X}$
+\item $x,y\in\mathbb{X}, \alpha,\beta\in\mathbb{F} \Rightarrow \alpha x + \beta y \in \mathbb{X}$.
+\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Subspace}
+
+\begin{definition}[Subspace] A \underline{subspace} $V \subset \mathbb{X}$ is a subset of $\mathbb{X}$ that is also a linear vector space, in particular it contains zero.	
+\end{definition}
+
+
+\par\noindent{\bf Important property:} A vector space contains a \underline{zero} element.	
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Examples}
+
+
+The following are vector spaces:
+\begin{itemize}
+\item $(\mathbb{R}^n, \mathbb{R})$, $(\mathbb{C}^n, \mathbb{C})$, $(\mathbb{R}^{m\times n}, \mathbb{R})$, $(C[a,b], \mathbb{R})$, $(\boldsymbol{\ell}^\infty, \mathbb{R})$, $(L^\infty, \mathbb{R})$.
+\end{itemize}
+
+The following are NOT vector spaces:
+\begin{itemize}
+\item 	The set $\mathbb{X}=\mathbb{R} \times [0,2\pi]$, (a cylinder) is not a vector space for any field $\mathbb{F}$.  This is the state space for an inverted pendulum.
+\item The set of rotation matrices is not a vector space for any field $\mathbb{F}$.   This is in the configuration space for robots and satellites.\\
+\item The set of unit quaternions is not a vector space for any field.  Quaternions are used extensively in robotics, quantum mechanics, and computer graphics.
+\item There are many useful spaces that are NOT linear vector spaces.
+\end{itemize}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Linear Independence}
+
+
+Let $S$ be a vector space and let $T \subset S$.  ($T$ may have uncountable infinite members).  $T$ is linearly independent if for each \underline{finite} nonempty subset of $T$. i.e., $\{p_1,\cdots,p_n\}$ where $p_i\in T$, we have that 
+\[
+c_1p_1+\cdots+c_np_n=0 \qquad \iff \quad c_1=c_2=\cdots=c_n=0.
+\]
+Otherwise $T$ is linearly dependent.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Linear Independence}
+
+\begin{example}  Let $S=\mathbb{R}^3$ then the set $T=\{ (1,0,0)^\top, (0, 1, 0)^\top \} \subset \mathbb{R}^3$ is linearly independent since
+\[
+c_1\begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} + c_2\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} = \begin{pmatrix} c_1 \\ c_2 \\ 0 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+if and only if $c_1=c_2=0$.  
+
+However, the set $T=\{ (1,1,0)^\top, (2, 2, 0)^\top \} \subset \mathbb{R}^3$ is linearly dependent since
+\[
+c_1\begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} + c_2\begin{pmatrix} 2 \\ 2 \\ 0 \end{pmatrix} = \begin{pmatrix} c_1+2c_2 \\ c_1+2c_2 \\ 0 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+when $c_1=-2$ and $c_2=1$ (as only on example).
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Span}
+
+\begin{definition}[Span]
+	Let $S$ be a vector space, then $\text{span}(T)$ is the set of all linear combinations of $T\subseteq S$.
+\end{definition}
+ 
+\begin{example} 
+\[
+\text{span}\left\{ \left( \begin{array}{c} 1 \\ 1 \end{array} \right) \right\} = \left\{ \begin{pmatrix} \alpha \\ \alpha \end{pmatrix} | \alpha\in\mathbb{R} \right\}
+\]
+\end{example}
+\begin{example} 
+\[
+\text{span}\left\{ \left( \begin{array}{c} 1\\0 \end{array}\right),\left(\begin{array}{c}0\\1\end{array}\right)\right\}= \left\{\begin{pmatrix} \alpha \\ \beta \end{pmatrix}:\alpha, \beta\in\mathbb{R}\right\} = \mathbb{R}^2.
+\]
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Basis}
+
+\begin{definition}[Basis] $T$ is a \underline{basis} for the vector space $S$ if $T$ is linearly independent and $\mathrm{span}(T)=S$.	
+\end{definition}
+
+\begin{definition}[Dimension] The dimension of the vector space $S$ is the smallest number of linearly independent vectors needed to span $S$.	
+\end{definition}
+
+\begin{example}
+One possible basis for $\mathbb{R}^n$ is given by
+\[
+\left\{\left(\begin{array}{c}1\\0\\\vdots\\0\end{array}\right),\left(\begin{array}{c}0\\1\\\vdots\\0\end{array}\right)\cdots,\left(\begin{array}{c}0\\0\\\vdots\\1\end{array}\right)\right\}.
+\]
+Therefore $\dim(\mathbb{R}^n) = n$.
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Basis}
+
+\begin{example}
+One possible basis for $\boldsymbol{\ell}^\infty$ is given by
+\[
+\left\{
+  \left(
+    \begin{array}{c}
+      1\\
+      0\\
+      0\\
+      \vdots\\
+      \vdots\\
+      \vdots
+    \end{array}
+  \right)
+  ,\left(
+    \begin{array}{c}
+      0\\
+      1\\
+      0\\
+      \vdots\\
+      \vdots\\
+      \vdots
+    \end{array}
+  \right)
+  ,\cdots,
+  \left(
+    \begin{array}{c}
+      0\\
+      0\\
+      \vdots\\
+      0\\
+      1\\
+      0\\
+      \vdots
+    \end{array}
+  \right)
+  ,\cdots
+\right\}
+\]
+Therefore $\dim(\boldsymbol{\ell}^\infty) = \infty$.
+\end{example}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Vector Spaces: Basis}
+\begin{example}
+The set of all polynomials $P$ is a vector space with basis
+\[ \{1,t,t^2,\cdots\} \]
+Therefore $\dim(P) = \infty$.
+\end{example}
+
+\begin{example}
+The set of all polynomials of degree $\leq q$ $P^q$ is a vector space with basis
+\[ \{1,t,t^2,\cdots, t^q\} \]
+Therefore $\dim(P^q) = q$.
+\end{example}
+\end{frame}
+
+
+\end{document}

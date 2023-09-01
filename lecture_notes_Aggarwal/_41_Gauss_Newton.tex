@@ -1,0 +1,111 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Gauss-Newton Optimization}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Least Squares as a Gradient Descent Problem}
+Consider the least squares problem
+	\begin{mini*}|s|
+		{x\in\mathbb{R}^n}{\norm{Ax-b}_2^2}{}{}
+	\end{mini*}
+where $A\in\mathbb{R}^{m\times n}$ is tall.  We know that the solution is
+\[
+x^\ast = (A^\top A)^{-1} A^\top b.
+\]
+
+Can we pose this as a gradient descent problem?
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Least Squares as a Gradient Descent Problem}
+	Define the \underline{residual} as
+	\[
+		\rbf(x) = \begin{pmatrix} r_1(x) \\ \vdots \\ r_m(x) \end{pmatrix} = Ax-b
+	\]	
+	and define the sum-of-squares error as
+	\begin{align*}
+	S(x) &= \frac{1}{2}\rbf^\top(x)\rbf(x) \\
+		 &= \frac{1}{2}\sum_{j=1}^m r_j^2(x) \\
+		 &= \frac{1}{2}(Ax-b)^\top (Ax-b) \\
+		 &= \frac{1}{2}\norm{Ax-b}_2^2.
+	\end{align*}
+	The least squares problem is to find $x$ that minimizes $S(x)$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Least Squares as a Gradient Descent Problem}
+	The gradient of $S$ is given by
+	\begin{align*}
+		\frac{\partial S}{\partial x} 
+			&= \frac{\partial \rbf}{\partial x}^\top(x) \rbf(x) \\
+			&= A^\top (Ax-b) = A^\top A x - A^\top b.
+	\end{align*}
+	
+	So the gradient descent algorithm gives
+	\[
+	x^{[k+1]} = x^{[k]} - \alpha \left(A^\top A x^{[k]} - A^\top b\right)
+	\]
+	
+	In general, we might allow $\alpha>0$ to be a positive definite matrix $\mathscr{A}>0$:
+	\[
+	x^{[k+1]} = x^{[k]} - \mathscr{A} \left(A^\top A x^{[k]} - A^\top b\right).
+	\]	
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Least Squares as a Gradient Descent Problem}
+	Selecting 
+	\[
+		\mathscr{A} = (A^\top A)^{-1}
+	\]	
+	gives
+	\begin{align*}
+	x^{[k+1]} 
+		&= x^{[k]} - (A^\top A)^{-1} \left(A^\top A x^{[k]} - A^\top b\right) \\
+		&= x^{[k]} - (A^\top A)^{-1} (A^\top A) x^{[k]} + (A^\top A)^{-1} A^\top b \\
+		&= (A^\top A)^{-1} A^\top b,
+	\end{align*}
+	which is the optimal solution.  
+	
+	Noting that $A = \frac{\partial \rbf}{\partial x}$, we have shown that the iteration
+	\[
+	x^{[k+1]} = x^{[k]} - \left(\frac{\partial \rbf^\top}{\partial x}(x^{[k]}) \frac{\partial \rbf}{\partial x}(x^{[k]})\right)^{-1} \frac{\partial \rbf^\top}{\partial x}(x^{[k]}) \rbf(x^{[k]})
+	\]
+	converges to the optimal in {\em one} step when $\rbf(x) = Ax-b$.
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Nonlinear Least Squares}
+	Let $r_j(x)$, $j=1, \dots, m$ be a general set of residual function to be minimized.  In other words, suppose we wish to solve
+	\begin{mini*}|s|
+		{x\in\mathbb{R}^n}{\frac{1}{2}\rbf^\top(x) \rbf(x)}{}{}.
+	\end{mini*}
+	Let $\Jbf(x) \defeq \frac{\partial \rbf}{\partial x}(x)$.  Then the \underline{Gauss-Newton} (GN) iteration algorithm is given by
+	\[
+		x^{[k+1]} = x^{[k]} - \left(\Jbf^\top(x^{[k]}) \Jbf(x^{[k]})\right)^{-1} \Jbf^\top(x^{[k]}) \rbf(x^{[k]})
+	\]
+	
+	We know that the GN method converges in one step for the linear least squares problem.
+\end{frame}
+
+
+
+
+\end{document}

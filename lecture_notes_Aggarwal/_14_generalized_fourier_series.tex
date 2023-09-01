@@ -1,0 +1,167 @@
+\documentclass{beamer}
+\input{macros}
+
+\title{ECEn 671: Mathematics of Signals and Systems}
+\author{Randal W. Beard}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Generalized Fourier Series}
+\frame{\sectionpage}
+
+%----------------------------------
+\begin{frame}\frametitle{Section 3.17: Generalized Fourier Series}
+
+	Topic of interest: $L_2$ function approximation
+	
+	\vfill
+
+	\begin{definition}[Complete Basis]
+	An orthonormal set $\{p_i, i=1, \ldots, \infty\}$ in a Hilbert space
+	$\mathbb{S}$ is a \underline{complete basis} or \underline{total basis} if
+	$\forall x \in \mathbb{S}$
+	\[ x = \sum_{i=1}^{\infty} \iprod{x,p_i }p_i \]
+	\end{definition}
+	
+	\vfill
+
+	Note that if $x = \sum_{i=1}^{\infty} c_ip_i$ and $\iprod{p_i,p_j } =
+	\delta_{ij}$ then
+	\[ \iprod{x,p_j } = \sum_{i=1}^{\infty}c_i\iprod{p_i,p_j }=c_j\]
+	\[ \Rightarrow c_j = \iprod{x,p_j } \]
+
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Generalized Fourier Series, cont.}
+	Therefore we can write
+	\[ 
+	x = \sum_{i=1}^{\infty} \iprod{x,p_i }p_i.
+	\]	
+	
+	\vfill
+	
+	Most common example:  standard Fourier basis
+	\[ P_n(t) = \frac{1}{\sqrt{T}}e^{j \left(\frac{2\pi}{T}\right)n t} \]
+	Any function $f \in L_2[0,T]$ can be written as
+	\[ f(t) = \sum_{n=-\infty}^{\infty}c_n \frac{1}{T}
+	e^{j\left(\frac{2\pi}{T}\right)nt} \]
+	where the coefficients are given as
+	\[ c_n = \iprod{f,\frac{1}{\sqrt{T}}e^{j\left(\frac{2\pi}{T}\right)nt} } \defeq
+	\frac{1}{\sqrt{T}}\int_{0}^{T}f(t)e^{j\left(\frac{2\pi}{T}\right)nt}dt \]
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Generalized Fourier Series, cont.}
+	Actually it is common to place the $\frac{1}{\sqrt{T}}$'s together
+	letting $f(t) = \sum_{n=-\infty}^{\infty} b_n e^{j\left(\frac{2\pi}{T}\right)nt}$ where
+	\[ b_n = \iprod{f(t), \frac{1}{T}e^{j\left(\frac{2\pi}{T}\right)nt} } =
+	\frac{1}{T}\int_0^{T}f(t) e^{-j\left(\frac{2\pi}{T}\right)nt}dt \]
+	
+	Generalized Fourier series hold for \underline{any} complete basis,
+	i.e.
+	\[ x = \sum_{j=1}^{\infty} \iprod{x,p_j }p_j \]
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Generalized Fourier Series, cont.}
+	There are two important relationship between a function and its
+	Fourier transform.
+	
+	\begin{theorem}[Bessel's Inequality]
+	Suppose $\{p_1,p_2,\ldots\}$ is orthonormal but not necessarily
+	complete and let 
+	\[ c = \{ \iprod{x,p_1 },\iprod{x,p_2 }, \ldots \} = \{c_1,c_2,\ldots
+	\}\]
+	then
+	\[ \fbox{$\norm{c }_{\ellbf_2} \leq \norm{x }_{L_2}$} \]
+	\end{theorem}
+
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Proof:}
+
+	\begin{align*}
+	0 \leq \norm{x - \sum c_jp_j }_{L_2}^2 &= \iprod{x - \sum c_jp_j, x-
+		\sum c_j p_j }_{L_2}\\
+	&= \iprod{x,x }_{L_2} 
+		- \sum \bar{c}_j\iprod{x,p_j }_{L_2}
+	\\ \qquad & 
+		- \sum c_j\bar{\iprod{x,p_j }}_{L_2} 
+		+ \sum \sum c_j \bar{c}_k \iprod{p_j,p_k
+	}_{L_2}\\
+	&= \norm{x }_{L_2}^{2} - \sum \bar{c}_jc_j - \sum c_j\bar{c}_j + \sum
+	c_j\bar{c}_j\\
+	&= \norm{x }_{L_2}^2 - \sum_{j=1}^{\infty} |c_j|^2\\
+	&=\norm{x }_{L_2}^2 - \norm{c }_{\ellbf_2}^2\\
+	&\Rightarrow \norm{c }_{\ellbf_2}^2 \leq \norm{x }_{L_2}^2
+	\end{align*}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Generalized Fourier Series, cont.}
+	\begin{theorem}[Parseval's Equality]
+	If $T = \{p_1,p_2,\ldots \}$ is complete then
+	\[ \fbox{$\norm{x }_{L_2}^2 = \norm{c }_{\ellbf_2}^2$} \]
+	\end{theorem}
+	\begin{proof}
+	If $T$ is complete then
+	\[ \norm{x - \sum c_jp_j }^2 = 0 \]
+	and the result follows from the proof of Bessel's inequality	.
+	\end{proof}
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Significance of Parseval's Equality}
+	
+	$\norm{x }_{L_2}^2 = \norm{c }_{\ellbf_2}^2$ says that the energy in a
+	signal (i.e. $\norm{x }_{L_2}$) is equal to the energy in the
+	Fourier coefficients (i.e. $\norm{c }_{\ellbf_2}^2$).
+	
+	\vfill
+	
+	This relationship between $x$ and its transform $c$ is written as 
+	\[
+	x \overset{\mathcal{F}}{\longleftrightarrow} c.
+	\]
+	
+\end{frame}
+
+%----------------------------------
+\begin{frame}\frametitle{Significance of Parseval's Equality, cont.}
+	\begin{lemma}[Moon Lemma 3.1]
+	If $x \overset{\mathcal{F}}{\longleftrightarrow} c$ and $y \overset{\mathcal{F}}{\longleftrightarrow}
+	b$ for the same complete basis $\{p_1,p_2,\ldots\}$ then
+	\[ 
+	\iprod{x,y }_{L_2} = \iprod{c,b }_{\ellbf_2}.
+	\]		
+	\end{lemma}
+	\begin{proof}
+	Let $x = \sum_{i=1}^{\infty} c_ip_i$, and  $y = \sum_{i=1}^{\infty}b_ip_i$
+	then
+	\begin{align*}
+	\iprod{x,y }_{L_2} &=
+	\sum_{i=1}^{\infty}\sum_{j=1}^{\infty}c_i\bar{b}_j\iprod{p_i,p_j }\\
+	&= \sum_{i=1}^{\infty} c_i\bar{b}_i\\
+	&= \iprod{c,b }_{\ellbf_2}
+	\end{align*}		
+	\end{proof}
+\end{frame}
+
+
+
+
+\end{document}
